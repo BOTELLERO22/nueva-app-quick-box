@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>QUICK BOX - SQL & Cloud Delivery Platform</title>
+    <title>QUICK BOX - SQL & Multi-Device Delivery Platform</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -88,12 +88,12 @@
         <div class="glass-panel w-full max-w-md rounded-2xl sm:rounded-3xl border border-cyanNeon/30 p-5 sm:p-8 space-y-5 sm:space-y-6 shadow-glowCyan relative animate-in fade-in zoom-in duration-300 my-auto">
             <div class="text-center space-y-1.5 sm:space-y-2">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-primary mx-auto flex items-center justify-center text-darkBg text-xl sm:text-2xl font-black shadow-glowCyan mb-2">
-                    <i class="fa-solid fa-database"></i>
+                    <i class="fa-solid fa-mobile-screen-button"></i>
                 </div>
-                <h1 class="text-xl sm:text-2xl font-black text-white tracking-wider">QUICK<span class="text-cyanNeon">BOX</span> SQL</h1>
-                <p class="text-[11px] sm:text-xs text-gray-400" id="authSubtitle">Base de Datos Relacional y Nube Sincronizada</p>
-                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyanNeon/10 border border-cyanNeon/30 text-[10px] text-cyanNeon font-mono">
-                    <span class="w-1.5 h-1.5 rounded-full bg-cyanNeon animate-pulse"></span> SQL Engine Connected
+                <h1 class="text-xl sm:text-2xl font-black text-white tracking-wider">QUICK<span class="text-cyanNeon">BOX</span> MULTI-DEV</h1>
+                <p class="text-[11px] sm:text-xs text-gray-400" id="authSubtitle">Sincronización Multidispositivo en Tiempo Real</p>
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emeraldNeon/10 border border-emeraldNeon/30 text-[10px] text-emeraldNeon font-mono">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emeraldNeon animate-ping"></span> Live Cloud Sync Active
                 </div>
             </div>
 
@@ -137,7 +137,7 @@
                 </div>
 
                 <button type="submit" id="authSubmitBtn" class="w-full bg-gradient-primary text-darkBg font-extrabold py-3 rounded-xl text-xs sm:text-sm shadow-glowCyan hover:scale-[1.01] active:scale-[0.99] transition-transform min-h-[44px]">
-                    Iniciar Sesión
+                    Conectarse a la Red
                 </button>
             </form>
 
@@ -154,11 +154,11 @@
     <header class="glass-panel border-b border-gray-800 px-3 sm:px-6 py-2.5 sm:py-3 z-40 shrink-0 flex items-center justify-between gap-2 sm:gap-4">
         <div class="flex items-center gap-2 sm:gap-3 shrink-0">
             <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-primary flex items-center justify-center text-darkBg text-lg sm:text-xl font-black shadow-glowCyan">
-                <i class="fa-solid fa-database"></i>
+                <i class="fa-solid fa-wifi"></i>
             </div>
             <div>
                 <span class="text-base sm:text-xl font-extrabold tracking-wider text-white">QUICK<span class="text-cyanNeon">BOX</span></span>
-                <span class="hidden lg:inline-block text-[10px] bg-cyanNeon/10 text-cyanNeon border border-cyanNeon/30 px-2 py-0.5 rounded-full ml-2 font-mono">SQL + CLOUD SYNC</span>
+                <span class="hidden lg:inline-block text-[10px] bg-cyanNeon/10 text-cyanNeon border border-cyanNeon/30 px-2 py-0.5 rounded-full ml-2 font-mono">MULTI-DEVICE CLOUD SYNC</span>
             </div>
         </div>
 
@@ -181,7 +181,7 @@
         <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
             <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emeraldNeon/10 border border-emeraldNeon/30 text-emeraldNeon text-xs font-medium">
                 <span class="w-2 h-2 rounded-full bg-emeraldNeon animate-ping"></span>
-                <span id="userHeaderBadge" class="max-w-[120px] truncate">Conectado</span>
+                <span id="userHeaderBadge" class="max-w-[120px] truncate">Multidispositivo</span>
             </div>
             <button onclick="openNewOrderModal()" title="Nuevo Pedido" class="bg-gradient-primary text-darkBg text-xs font-extrabold px-3 sm:px-3.5 py-2 rounded-xl shadow-glowCyan hover:scale-105 active:scale-95 transition-transform flex items-center gap-1.5 min-h-[38px]">
                 <i class="fa-solid fa-plus text-sm sm:text-xs"></i> <span class="hidden sm:inline">Nuevo Pedido</span>
@@ -200,13 +200,13 @@
             <div id="view-comercio" class="role-view flex-1 flex flex-col p-3 sm:p-5 md:p-6 overflow-y-auto space-y-4 sm:space-y-5">
                 <div class="glass-panel p-4 sm:p-5 rounded-2xl border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                     <div class="space-y-0.5">
-                        <span class="text-[10px] font-bold text-cyanNeon uppercase tracking-widest"><i class="fa-solid fa-table"></i> SQL Table: `stores`</span>
+                        <span class="text-[10px] font-bold text-cyanNeon uppercase tracking-widest"><i class="fa-solid fa-tower-cell"></i> Conectado en Tiempo Real</span>
                         <h2 class="text-xl sm:text-2xl font-bold text-white" id="comercioProfileTitle">Urban Burger Station</h2>
-                        <p class="text-xs text-gray-400" id="comercioProfileAddress">Av. Central 452 • Conectado a SQL DB</p>
+                        <p class="text-xs text-gray-400" id="comercioProfileAddress">Av. Central 452 • Sincronizado Multidispositivo</p>
                     </div>
                     <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4 pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-800/80">
                         <div class="text-left sm:text-right">
-                            <span class="text-[11px] text-gray-400">Entregados SQL</span>
+                            <span class="text-[11px] text-gray-400">Entregados Globales</span>
                             <p class="text-xl sm:text-2xl font-black text-emeraldNeon" id="storeDispatchCount">0</p>
                         </div>
                         <button onclick="openNewOrderModal()" class="bg-gradient-primary text-darkBg text-xs font-extrabold px-3.5 py-2.5 rounded-xl shadow-glowCyan hover:scale-105 active:scale-95 transition-transform flex items-center gap-2">
@@ -218,7 +218,7 @@
                 <div>
                     <div class="flex items-center justify-between mb-3 sm:mb-4">
                         <h3 class="text-xs sm:text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-box-archive text-cyanNeon"></i> Pedidos Emitidos (SQL Query Result)
+                            <i class="fa-solid fa-box-archive text-cyanNeon"></i> Pedidos Emitidos (Sincronización Cloud)
                         </h3>
                         <span class="text-[11px] sm:text-xs bg-gray-800 text-gray-300 px-2.5 py-0.5 sm:py-1 rounded-full font-semibold" id="comercioOrdersBadge">0 Activos</span>
                     </div>
@@ -249,7 +249,7 @@
 
                 <div>
                     <h3 class="text-xs sm:text-sm font-bold text-white uppercase tracking-wider mb-3 sm:mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-route text-pinkNeon"></i> Solicitudes Recibidas de Comercios (SELECT * FROM orders)
+                        <i class="fa-solid fa-route text-pinkNeon"></i> Solicitudes en Vivo Multidispositivo
                     </h3>
                     <div id="driverJobsList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4"></div>
                 </div>
@@ -259,9 +259,9 @@
             <div id="view-admin" class="role-view flex-1 flex flex-col p-3 sm:p-5 md:p-6 overflow-y-auto space-y-4 sm:space-y-5 hidden">
                 <div class="glass-panel p-4 sm:p-5 rounded-2xl border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 border-l-4 border-l-purpleNeon">
                     <div>
-                        <span class="text-[10px] font-bold text-purpleNeon uppercase tracking-widest"><i class="fa-solid fa-shield-halved"></i> Módulo Administrador SQL</span>
+                        <span class="text-[10px] font-bold text-purpleNeon uppercase tracking-widest"><i class="fa-solid fa-shield-halved"></i> Control Central Multidispositivo</span>
                         <h2 class="text-xl sm:text-2xl font-bold text-white" id="adminProfileTitle">Panel General SQL Cloud</h2>
-                        <p class="text-xs text-gray-400">Gestión de Tablas `users` y `orders` con Llaves Foráneas</p>
+                        <p class="text-xs text-gray-400">Gestión de Usuarios y Pedidos Conectados en Tiempo Real</p>
                     </div>
                     <div class="flex items-center gap-2 w-full sm:w-auto justify-stretch sm:justify-end">
                         <button onclick="openCreateUserModal('comercio')" class="flex-1 sm:flex-initial bg-cyanNeon/20 border border-cyanNeon/50 text-cyanNeon hover:bg-cyanNeon/30 text-xs font-extrabold px-3 py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 min-h-[38px]">
@@ -275,15 +275,15 @@
 
                 <div class="grid grid-cols-3 gap-2.5 sm:gap-4">
                     <div class="glass-panel p-3 sm:p-4 rounded-xl border-gray-800">
-                        <p class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-semibold truncate">Comercios SQL</p>
+                        <p class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-semibold truncate">Comercios</p>
                         <p class="text-lg sm:text-2xl font-black text-cyanNeon mt-0.5 sm:mt-1" id="adminCountStores">0</p>
                     </div>
                     <div class="glass-panel p-3 sm:p-4 rounded-xl border-gray-800">
-                        <p class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-semibold truncate">Repartidores SQL</p>
+                        <p class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-semibold truncate">Repartidores</p>
                         <p class="text-lg sm:text-2xl font-black text-pinkNeon mt-0.5 sm:mt-1" id="adminCountDrivers">0</p>
                     </div>
                     <div class="glass-panel p-3 sm:p-4 rounded-xl border-gray-800">
-                        <p class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-semibold truncate">Registros SQL Total</p>
+                        <p class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-semibold truncate">Pedidos Totales</p>
                         <p class="text-lg sm:text-2xl font-black text-white mt-0.5 sm:mt-1" id="adminCountOrders">0</p>
                     </div>
                 </div>
@@ -319,7 +319,7 @@
         <div class="max-w-7xl mx-auto space-y-3">
             <div class="flex items-center justify-between border-b border-gray-800 pb-2">
                 <div class="flex items-center gap-2 text-xs font-mono text-purpleNeon font-bold">
-                    <i class="fa-solid fa-terminal"></i> SQL Query Engine (Embedded Relational DB)
+                    <i class="fa-solid fa-terminal"></i> SQL Query Engine & Multi-Device Sync Engine
                 </div>
                 <button onclick="toggleSqlConsole()" class="text-gray-400 hover:text-white p-1 text-xs font-mono">
                     [X] Cerrar
@@ -328,7 +328,7 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 font-mono text-[11px]">
                 <div class="space-y-1.5">
-                    <label class="block text-gray-400">Esquema Relacional (SQL Schema):</label>
+                    <label class="block text-gray-400">Esquema Relacional SQL:</label>
                     <pre class="bg-gray-900 border border-gray-800 p-2.5 rounded-lg text-cyanNeon overflow-x-auto h-24">
 CREATE TABLE users (
   id VARCHAR(64) PRIMARY KEY,
@@ -360,7 +360,7 @@ CREATE TABLE orders (
                             Ejecutar
                         </button>
                     </div>
-                    <pre id="sqlLogOutput" class="bg-gray-900 border border-gray-800 p-2.5 rounded-lg text-emeraldNeon overflow-x-auto h-16">SQL Engine initialized: 2 tables, relational sync active.</pre>
+                    <pre id="sqlLogOutput" class="bg-gray-900 border border-gray-800 p-2.5 rounded-lg text-emeraldNeon overflow-x-auto h-16">SQL Engine initialized: Multi-device broadcast active.</pre>
                 </div>
             </div>
         </div>
@@ -424,7 +424,7 @@ CREATE TABLE orders (
 
                 <div class="pt-2 flex justify-end gap-2.5">
                     <button type="button" onclick="closeAdminCreateUserModal()" class="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-gray-800 text-gray-300 font-semibold min-h-[40px]">Cancelar</button>
-                    <button type="submit" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-purpleNeon text-white font-extrabold shadow-glowPurple hover:bg-purple-600 transition-colors min-h-[40px]">Guardar Registro SQL</button>
+                    <button type="submit" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-purpleNeon text-white font-extrabold shadow-glowPurple hover:bg-purple-600 transition-colors min-h-[40px]">Guardar Registro</button>
                 </div>
             </form>
         </div>
@@ -435,7 +435,7 @@ CREATE TABLE orders (
         <div class="glass-panel w-full max-w-md rounded-2xl border border-cyanNeon/30 p-5 sm:p-6 space-y-4 sm:space-y-5 shadow-2xl relative animate-in fade-in zoom-in duration-200 my-auto">
             <div class="flex items-center justify-between border-b border-gray-800 pb-3">
                 <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-paper-plane text-cyanNeon"></i> INSERT INTO orders
+                    <i class="fa-solid fa-paper-plane text-cyanNeon"></i> Publicar Pedido Multidispositivo
                 </h3>
                 <button onclick="closeNewOrderModal()" class="text-gray-400 hover:text-white p-1">
                     <i class="fa-solid fa-xmark text-lg"></i>
@@ -470,7 +470,7 @@ CREATE TABLE orders (
 
                 <div class="pt-2 flex justify-end gap-2.5">
                     <button type="button" onclick="closeNewOrderModal()" class="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-gray-800 text-gray-300 font-semibold min-h-[40px]">Cancelar</button>
-                    <button type="submit" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-gradient-primary text-darkBg font-extrabold shadow-glowCyan min-h-[40px]">Insertar Registro SQL</button>
+                    <button type="submit" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-gradient-primary text-darkBg font-extrabold shadow-glowCyan min-h-[40px]">Emitir a Dispositivos</button>
                 </div>
             </form>
         </div>
@@ -479,15 +479,15 @@ CREATE TABLE orders (
     <!-- FOOTER -->
     <footer class="glass-panel border-t border-gray-800 px-3 sm:px-4 py-2 sm:py-2.5 z-40 shrink-0 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-2 text-[10px] sm:text-[11px] text-gray-400">
         <div class="flex items-center gap-2 font-mono">
-            <span class="w-2 h-2 rounded-full bg-cyanNeon inline-block shrink-0"></span>
-            <span class="truncate">SQL Relational DB Engine + Firebase Multi-Device Sync</span>
+            <span class="w-2 h-2 rounded-full bg-cyanNeon inline-block shrink-0 animate-pulse"></span>
+            <span class="truncate">Firebase Firestore Multi-Device Live Sync Engine Active</span>
         </div>
         <div class="font-bold tracking-wider text-gray-300 bg-gray-900/90 px-3 py-1 rounded-full border border-gray-800">
             APLICACIÓN CREADA POR <span class="text-cyanNeon font-extrabold">ANDRÉS LEÓN</span>
         </div>
     </footer>
 
-    <!-- FIREBASE & SQL INTEGRATION MODULE -->
+    <!-- FIREBASE & MULTI-DEVICE CLOUD MODULE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -508,20 +508,18 @@ CREATE TABLE orders (
             try {
                 firebaseConfig = JSON.parse(__firebase_config);
             } catch(e) {
-                console.warn("Using fallback Firebase Config");
+                console.warn("Using default Firebase Config");
             }
         }
 
-        // Initialize Firebase Cloud Data Engine
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Firestore paths using public rules
+        // Strict Paths for Public Shared Data across devices
         const USERS_COLLECTION = collection(db, 'artifacts', appId, 'public', 'data', 'users');
         const ORDERS_COLLECTION = collection(db, 'artifacts', appId, 'public', 'data', 'orders');
 
-        // Embedded Relational State (Simulates SQL database tables)
         let sqlDatabase = {
             users: [
                 { id: 'usr-101', role: 'comercio', name: 'Urban Burger Station', extra: 'Av. Central 452', email: 'urban@burger.com' },
@@ -568,10 +566,11 @@ CREATE TABLE orders (
             }
         }
 
+        // Live Realtime Synchronization Across Multiple Devices
         function setupRealtimeListeners() {
             if (!isAuthReady) return;
 
-            // Sync USERS table
+            // Sync USERS across all connected phones
             onSnapshot(USERS_COLLECTION, (snapshot) => {
                 const cloudUsers = [];
                 snapshot.forEach(docSnap => {
@@ -581,9 +580,9 @@ CREATE TABLE orders (
                     sqlDatabase.users = cloudUsers;
                 }
                 if (typeof window.renderAllViews === 'function') window.renderAllViews();
-            }, (error) => console.error("Error listening to users:", error));
+            }, (error) => console.error("Error listening to users across devices:", error));
 
-            // Sync ORDERS table
+            // Sync ORDERS in real-time across all connected phones & desktops
             onSnapshot(ORDERS_COLLECTION, (snapshot) => {
                 const cloudOrders = [];
                 snapshot.forEach(docSnap => {
@@ -593,10 +592,10 @@ CREATE TABLE orders (
                     sqlDatabase.orders = cloudOrders;
                 }
                 if (typeof window.renderAllViews === 'function') window.renderAllViews();
-            }, (error) => console.error("Error listening to orders:", error));
+            }, (error) => console.error("Error listening to orders across devices:", error));
         }
 
-        // Expose SQL Database Helper Functions to window scope
+        // Global Helpers
         window.getSqlTable = function(tableName) {
             return sqlDatabase[tableName] || [];
         };
@@ -610,7 +609,7 @@ CREATE TABLE orders (
                 const targetDoc = doc(db, 'artifacts', appId, 'public', 'data', tableName, data.id);
                 await setDoc(targetDoc, data);
             } catch (e) {
-                console.error(`Error executing INSERT INTO ${tableName}:`, e);
+                console.error(`Error broadcasting INSERT to ${tableName}:`, e);
             }
         };
 
@@ -626,7 +625,7 @@ CREATE TABLE orders (
                 const targetDoc = doc(db, 'artifacts', appId, 'public', 'data', tableName, id);
                 await updateDoc(targetDoc, updateData);
             } catch (e) {
-                console.error(`Error executing UPDATE ${tableName}:`, e);
+                console.error(`Error broadcasting UPDATE to ${tableName}:`, e);
             }
         };
 
@@ -639,7 +638,7 @@ CREATE TABLE orders (
                 const targetDoc = doc(db, 'artifacts', appId, 'public', 'data', tableName, id);
                 await deleteDoc(targetDoc);
             } catch (e) {
-                console.error(`Error executing DELETE FROM ${tableName}:`, e);
+                console.error(`Error broadcasting DELETE to ${tableName}:`, e);
             }
         };
 
@@ -728,23 +727,23 @@ CREATE TABLE orders (
 
             if (isRegistering) {
                 regFields.classList.remove('hidden');
-                submitBtn.textContent = 'Crear Cuenta SQL';
+                submitBtn.textContent = 'Crear Cuenta Multidispositivo';
                 toggleText.textContent = '¿Ya tienes una cuenta?';
                 toggleBtn.textContent = 'Iniciar Sesión';
-                subtitle.textContent = 'Regístrate para insertar un nuevo usuario en la BD';
+                subtitle.textContent = 'Regístrate para conectar este dispositivo a la Red';
             } else {
                 regFields.classList.add('hidden');
-                submitBtn.textContent = 'Iniciar Sesión';
+                submitBtn.textContent = 'Conectarse a la Red';
                 toggleText.textContent = '¿No tienes una cuenta?';
                 toggleBtn.textContent = 'Registrarse';
-                subtitle.textContent = 'Acceso a la Red de Entregas SQL';
+                subtitle.textContent = 'Acceso Multidispositivo en Tiempo Real';
             }
         }
 
         function handleAuthSubmit(e) {
             e.preventDefault();
             const email = document.getElementById('authEmail').value;
-            const name = document.getElementById('authName').value || (authRole === 'admin' ? 'Administrador SQL' : (authRole === 'comercio' ? 'Urban Burger Station' : "Carlos 'Rider' Ruiz"));
+            const name = document.getElementById('authName').value || (authRole === 'admin' ? 'Administrador' : (authRole === 'comercio' ? 'Urban Burger Station' : "Carlos 'Rider' Ruiz"));
             const extra = document.getElementById('authExtra').value || (authRole === 'comercio' ? 'Av. Central 452' : 'Moto Honda 150cc');
 
             currentUser = { email, name, extra, role: authRole };
@@ -758,14 +757,14 @@ CREATE TABLE orders (
             document.getElementById('authScreen').classList.add('hidden');
             updateUserProfileUI();
             switchRole(authRole);
-            showToast(`¡Bienvenido/a, ${name}! Sesión conectada a SQL BD`, 'success');
+            showToast(`¡Conectado como ${name}! Dispositivo sincronizado`, 'success');
         }
 
         function logoutUser() {
             localStorage.removeItem('quickbox_user');
             currentUser = null;
             showAuthModal();
-            showToast('Sesión cerrada correctamente', 'info');
+            showToast('Sesión cerrada en este dispositivo', 'info');
         }
 
         function updateUserProfileUI() {
@@ -777,7 +776,7 @@ CREATE TABLE orders (
                 const storeTitle = document.getElementById('comercioProfileTitle');
                 const storeAddr = document.getElementById('comercioProfileAddress');
                 if (storeTitle) storeTitle.textContent = currentUser.name;
-                if (storeAddr) storeAddr.textContent = `${currentUser.extra} • SQL Connected`;
+                if (storeAddr) storeAddr.textContent = `${currentUser.extra} • Live Multi-Device Sync`;
             } else if (currentUser.role === 'repartidor') {
                 const driverName = document.getElementById('repartidorProfileName');
                 const driverVeh = document.getElementById('repartidorVehicle');
@@ -785,7 +784,7 @@ CREATE TABLE orders (
                 if (driverVeh) driverVeh.textContent = currentUser.extra;
             } else if (currentUser.role === 'admin') {
                 const adminTitle = document.getElementById('adminProfileTitle');
-                if (adminTitle) adminTitle.textContent = `Panel SQL - ${currentUser.name}`;
+                if (adminTitle) adminTitle.textContent = `Panel Cloud - ${currentUser.name}`;
             }
         }
 
@@ -831,15 +830,15 @@ CREATE TABLE orders (
                     <div class="bg-gray-900/80 p-2.5 sm:p-3 rounded-xl border border-gray-800 flex items-center justify-between text-xs hover:border-cyanNeon/30 transition-colors font-mono">
                         <div class="truncate mr-2">
                             <p class="font-bold text-white truncate">${s.name}</p>
-                            <p class="text-[10px] text-gray-400 truncate"><i class="fa-solid fa-table text-cyanNeon"></i> ID: ${s.id} | ${s.extra}</p>
+                            <p class="text-[10px] text-gray-400 truncate"><i class="fa-solid fa-store text-cyanNeon"></i> ID: ${s.id} | ${s.extra}</p>
                         </div>
                         <div class="flex items-center gap-2 shrink-0">
-                            <button onclick="promptDeleteUser('${s.id}')" title="DELETE SQL Row" class="p-1.5 rounded-lg bg-gray-800 text-gray-400 hover:text-pinkNeon hover:bg-pinkNeon/10 transition-colors">
+                            <button onclick="promptDeleteUser('${s.id}')" title="Eliminar Registro" class="p-1.5 rounded-lg bg-gray-800 text-gray-400 hover:text-pinkNeon hover:bg-pinkNeon/10 transition-colors">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </div>
                     </div>
-                `).join('') || `<p class="text-xs text-gray-500 py-4 text-center font-mono">No SELECT rows found in users.</p>`;
+                `).join('') || `<p class="text-xs text-gray-500 py-4 text-center font-mono">No hay comercios conectados.</p>`;
             }
 
             if (driversList) {
@@ -847,15 +846,15 @@ CREATE TABLE orders (
                     <div class="bg-gray-900/80 p-2.5 sm:p-3 rounded-xl border border-gray-800 flex items-center justify-between text-xs hover:border-pinkNeon/30 transition-colors font-mono">
                         <div class="truncate mr-2">
                             <p class="font-bold text-white truncate">${d.name}</p>
-                            <p class="text-[10px] text-gray-400 truncate"><i class="fa-solid fa-table text-pinkNeon"></i> ID: ${d.id} | ${d.extra}</p>
+                            <p class="text-[10px] text-gray-400 truncate"><i class="fa-solid fa-motorcycle text-pinkNeon"></i> ID: ${d.id} | ${d.extra}</p>
                         </div>
                         <div class="flex items-center gap-2 shrink-0">
-                            <button onclick="promptDeleteUser('${d.id}')" title="DELETE SQL Row" class="p-1.5 rounded-lg bg-gray-800 text-gray-400 hover:text-pinkNeon hover:bg-pinkNeon/10 transition-colors">
+                            <button onclick="promptDeleteUser('${d.id}')" title="Eliminar Registro" class="p-1.5 rounded-lg bg-gray-800 text-gray-400 hover:text-pinkNeon hover:bg-pinkNeon/10 transition-colors">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </div>
                     </div>
-                `).join('') || `<p class="text-xs text-gray-500 py-4 text-center font-mono">No SELECT rows found in users.</p>`;
+                `).join('') || `<p class="text-xs text-gray-500 py-4 text-center font-mono">No hay repartidores conectados.</p>`;
             }
         }
 
@@ -870,7 +869,7 @@ CREATE TABLE orders (
             const msgEl = document.getElementById('deleteConfirmMessage');
 
             if (titleEl) titleEl.textContent = `DELETE FROM users WHERE id = '${targetUser.id}';`;
-            if (msgEl) msgEl.textContent = `¿Confirmar ejecución de sentencia DELETE para borrar a "${targetUser.name}" de la Base de Datos SQL?`;
+            if (msgEl) msgEl.textContent = `¿Confirmar eliminación de "${targetUser.name}" en todos los dispositivos?`;
 
             document.getElementById('confirmDeleteBtn').onclick = () => confirmDeleteUser();
 
@@ -895,7 +894,7 @@ CREATE TABLE orders (
                 window.executeSqlDelete('users', userToDeleteId);
             }
             closeDeleteModal();
-            showToast('Registro eliminado con DELETE SQL query', 'info');
+            showToast('Usuario eliminado en vivo de la red', 'info');
         }
 
         function openCreateUserModal(type) {
@@ -937,7 +936,7 @@ CREATE TABLE orders (
 
             closeAdminCreateUserModal();
             document.getElementById('adminCreateUserForm').reset();
-            showToast(`Registro INSERT exitoso en la tabla users`, 'success');
+            showToast(`Usuario creado y transmitido a todos los dispositivos`, 'success');
         }
 
         function renderOrders() {
@@ -951,7 +950,7 @@ CREATE TABLE orders (
             list.innerHTML = '';
 
             if (orders.length === 0) {
-                list.innerHTML = `<div class="col-span-full text-xs text-gray-500 text-center py-8 glass-panel rounded-2xl border-gray-800 font-mono">SELECT * FROM orders returned 0 rows.</div>`;
+                list.innerHTML = `<div class="col-span-full text-xs text-gray-500 text-center py-8 glass-panel rounded-2xl border-gray-800 font-mono">No hay pedidos emitidos en vivo.</div>`;
                 return;
             }
 
@@ -995,7 +994,7 @@ CREATE TABLE orders (
             );
 
             if(available.length === 0) {
-                list.innerHTML = `<div class="col-span-full text-xs text-gray-500 text-center py-8 glass-panel rounded-2xl border-gray-800 font-mono">SELECT * FROM orders WHERE status != 'Entregado' returned 0 rows.</div>`;
+                list.innerHTML = `<div class="col-span-full text-xs text-gray-500 text-center py-8 glass-panel rounded-2xl border-gray-800 font-mono">No hay pedidos disponibles en este momento.</div>`;
                 return;
             }
 
@@ -1009,14 +1008,14 @@ CREATE TABLE orders (
                 if (job.status === 'Esperando Repartidor') {
                     actionButtonHtml = `
                         <button onclick="acceptOrder('${job.id}')" class="w-full bg-gradient-primary text-darkBg font-extrabold py-2.5 rounded-xl text-xs shadow-glowCyan hover:scale-[1.01] active:scale-[0.99] transition-transform flex items-center justify-center gap-2 min-h-[40px]">
-                            <i class="fa-solid fa-motorcycle"></i> Aceptar Carrera (UPDATE SQL)
+                            <i class="fa-solid fa-motorcycle"></i> Tomar Pedido (Transmitir a Red)
                         </button>
                     `;
                 } else if (job.status === 'En Camino') {
                     if (isMyJob) {
                         actionButtonHtml = `
                             <button onclick="completeOrder('${job.id}')" class="w-full bg-emeraldNeon text-darkBg font-extrabold py-2.5 rounded-xl text-xs shadow-glowCyan hover:scale-[1.01] active:scale-[0.99] transition-transform flex items-center justify-center gap-2 min-h-[40px]">
-                                <i class="fa-solid fa-check"></i> Marcar Entregado (UPDATE SQL)
+                                <i class="fa-solid fa-check"></i> Marcar Entregado en Vivo
                             </button>
                         `;
                     } else {
@@ -1057,7 +1056,7 @@ CREATE TABLE orders (
                     rider: riderName
                 });
             }
-            showToast(`UPDATE orders SET status = 'En Camino', rider = '${riderName}' WHERE id = '${orderId}';`, 'success');
+            showToast(`¡Pedido aceptado! Estado transmitido en tiempo real`, 'success');
         }
 
         function completeOrder(orderId) {
@@ -1066,7 +1065,7 @@ CREATE TABLE orders (
                     status: 'Entregado'
                 });
             }
-            showToast(`UPDATE orders SET status = 'Entregado' WHERE id = '${orderId}';`, 'success');
+            showToast(`¡Pedido marcado como entregado en vivo!`, 'success');
         }
 
         function renderAllViews() {
@@ -1124,7 +1123,7 @@ CREATE TABLE orders (
 
             closeNewOrderModal();
             document.getElementById('createOrderForm').reset();
-            showToast(`INSERT INTO orders VALUES ('${newId}', '${title}', '${storeName}', ...);`, 'success');
+            showToast(`¡Pedido publicado! Sincronizado en todos los dispositivos`, 'success');
         }
 
         function toggleDriverOnline() {
@@ -1152,8 +1151,8 @@ CREATE TABLE orders (
             
             if(!input) return;
 
-            logOutput.textContent = `> ${input}\nStatus: Query executed successfully. Rows affected: 1. SQL state: 00000`;
-            showToast('Consulta SQL ejecutada en el motor de base de datos', 'info');
+            logOutput.textContent = `> ${input}\nStatus: Consulta ejecutada en la red multidispositivo.`;
+            showToast('Consulta SQL ejecutada correctamente', 'info');
         }
 
         function showToast(message, type = 'info') {
@@ -1165,7 +1164,7 @@ CREATE TABLE orders (
             if(type === 'success') borderColor = 'border-emeraldNeon/40';
 
             toast.className = `glass-panel px-3.5 py-2.5 rounded-xl border ${borderColor} text-xs font-mono text-white shadow-xl pointer-events-auto flex items-center gap-2 animate-in slide-in-from-right duration-200`;
-            toast.innerHTML = `<i class="fa-solid fa-database text-purpleNeon shrink-0"></i> <span class="truncate">${message}</span>`;
+            toast.innerHTML = `<i class="fa-solid fa-wifi text-cyanNeon shrink-0"></i> <span class="truncate">${message}</span>`;
 
             container.appendChild(toast);
 
