@@ -486,7 +486,6 @@
                 rider: null
             }
         ];
-        let currentUser = null;
         let isAuthReady = false;
 
         // Authenticate User
@@ -520,7 +519,9 @@
                 if (cloudUsers.length > 0) {
                     registeredUsers = cloudUsers;
                 }
-                renderAdminPanel();
+                if (typeof window.renderAdminPanel === 'function') {
+                    window.renderAdminPanel();
+                }
             }, (error) => {
                 console.error("Error listening to users:", error);
             });
@@ -816,6 +817,8 @@
             }
         }
 
+        window.renderAdminPanel = renderAdminPanel;
+
         function promptDeleteUser(userId) {
             const registeredUsers = window.getRegisteredUsers ? window.getRegisteredUsers() : [];
             const targetUser = registeredUsers.find(u => u.id === userId);
@@ -927,7 +930,7 @@
                             <span class="px-2 py-0.5 rounded-full border text-[10px] font-bold shrink-0 ${statusColor}">${order.status}</span>
                         </div>
                         <p class="text-xs text-gray-400"><i class="fa-solid fa-location-dot text-gray-500"></i> ${order.address}</p>
-                        ${order.rider ? `<p class="text-[11px] text-cyanNeon font-semibold"><i class="fa-solid fa-motorcycle"></i> Asignado a: ${order.rider}</p>` : ''}
+                        ${order.rider ? `<p class="text-[11px] text-cyanNeon font-semibold"><i class="fa-solid fa-motorcycle"></i> Repartidor: <strong class="text-white">${order.rider}</strong></p>` : `<p class="text-[11px] text-yellow-400 font-medium"><i class="fa-solid fa-clock"></i> Esperando asignación...</p>`}
                     </div>
                     <div class="flex items-center justify-between pt-2.5 border-t border-gray-800 text-xs">
                         <span class="text-gray-400">Total: <strong class="text-white">$${parseFloat(order.price).toFixed(2)}</strong></span>
@@ -945,7 +948,7 @@
             const orders = window.getOrders ? window.getOrders() : [];
             if (!list) return;
 
-            const currentRiderName = currentUser ? currentUser.name : null;
+            const currentRiderName = currentUser ? currentUser.name : "Carlos 'Rider' Ruiz";
             const available = orders.filter(o => 
                 o.status === 'Esperando Repartidor' || 
                 o.status === 'En Camino'
@@ -983,12 +986,6 @@
                             </div>
                         `;
                     }
-                } else {
-                    actionButtonHtml = `
-                        <div class="w-full text-center py-2 bg-emeraldNeon/10 border border-emeraldNeon/30 text-emeraldNeon rounded-xl text-xs font-bold">
-                            <i class="fa-solid fa-circle-check"></i> ${job.status}
-                        </div>
-                    `;
                 }
 
                 card.innerHTML = `
@@ -1020,7 +1017,7 @@
                     rider: riderName
                 });
             }
-            showToast(`¡Carrera Aceptada! Sincronizado en todos los dispositivos`, 'success');
+            showToast(`¡Carrera Aceptada por ${riderName}! Sincronizado con el Comercio`, 'success');
         }
 
         function completeOrder(orderId) {
