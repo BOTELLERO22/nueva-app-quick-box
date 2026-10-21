@@ -529,8 +529,8 @@
             { id: 'usr-4', role: 'repartidor', name: "Sonia 'Express' Gomez", extra: 'Bicicleta MTB', email: 'sonia@rider.com' }
         ];
 
-        // Sample Orders Array
-        let orders = [
+        // Sample Orders Array with LocalStorage Persistence
+        let orders = JSON.parse(localStorage.getItem('quickbox_orders')) || [
             {
                 id: 'QB-101',
                 title: 'Mega Combo Doble Queso + Bebida',
@@ -546,9 +546,7 @@
         // INITIALIZATION
         window.addEventListener('load', () => {
             checkAuthSession();
-            renderOrders();
-            renderDriverJobs();
-            renderAdminPanel();
+            renderAllViews();
         });
 
         // AUTHENTICATION LOGIC
@@ -711,10 +709,7 @@
             const targetView = document.getElementById(`view-${role}`);
             if (targetView) targetView.classList.remove('hidden');
 
-            if (role === 'admin') {
-                renderAdminPanel();
-            }
-
+            renderAllViews();
             showToast(`Cambiaste al modo: ${role.toUpperCase()}`, 'info');
         }
 
@@ -978,7 +973,7 @@
             if(!order) return;
 
             order.status = 'En Camino';
-            order.rider = currentUser ? currentUser.name : 'Carlos Ruiz';
+            order.rider = currentUser ? currentUser.name : "Carlos 'Rider' Ruiz";
 
             saveState();
 
@@ -993,7 +988,7 @@
         // COMPLETE ORDER
         function completeOrder(orderId) {
             const order = orders.find(o => o.id === orderId);
-            if(order) {
+            if(order && order.status === 'En Camino') {
                 order.status = 'Entregado';
                 saveState();
                 showToast(`¡El pedido ${orderId} ha sido entregado con éxito!`, 'success');
