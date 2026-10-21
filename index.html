@@ -2,7 +2,7 @@
 <html lang="es" class="h-full">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>QUICK BOX - Platform Network Cloud</title>
     
     <!-- Google Fonts -->
@@ -18,6 +18,13 @@
     <script>
         tailwind.config = {
             theme: {
+                screens: {
+                    'xs': '380px',
+                    'sm': '640px',
+                    'md': '768px',
+                    'lg': '1024px',
+                    'xl': '1280px',
+                },
                 extend: {
                     fontFamily: {
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
@@ -56,234 +63,243 @@
             background: linear-gradient(135deg, #00F2FE 0%, #4FACFE 100%);
         }
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
         }
         ::-webkit-scrollbar-track { background: #090D16; }
         ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #334155; }
+        
+        /* Smooth touch feedback for mobile touch controls */
+        button, a {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
     </style>
 </head>
 <body class="bg-darkBg text-gray-100 font-sans antialiased h-full flex flex-col overflow-hidden selection:bg-cyanNeon selection:text-darkBg">
 
-    <div id="toastContainer" class="fixed top-20 right-4 z-[9999] flex flex-col gap-2 pointer-events-none"></div>
+    <div id="toastContainer" class="fixed top-4 sm:top-20 right-3 sm:right-4 left-3 sm:left-auto z-[9999] flex flex-col gap-2 pointer-events-none max-w-sm ml-auto"></div>
 
-    <div id="authScreen" class="fixed inset-0 z-[10000] bg-darkBg/95 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-md rounded-3xl border border-cyanNeon/30 p-8 space-y-6 shadow-glowCyan relative animate-in fade-in zoom-in duration-300">
-            <div class="text-center space-y-2">
-                <div class="w-14 h-14 rounded-2xl bg-gradient-primary mx-auto flex items-center justify-center text-darkBg text-2xl font-black shadow-glowCyan mb-3">
+    <!-- AUTH SCREEN MODAL -->
+    <div id="authScreen" class="fixed inset-0 z-[10000] bg-darkBg/95 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="glass-panel w-full max-w-md rounded-2xl sm:rounded-3xl border border-cyanNeon/30 p-5 sm:p-8 space-y-5 sm:space-y-6 shadow-glowCyan relative animate-in fade-in zoom-in duration-300 my-auto">
+            <div class="text-center space-y-1.5 sm:space-y-2">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-primary mx-auto flex items-center justify-center text-darkBg text-xl sm:text-2xl font-black shadow-glowCyan mb-2">
                     <i class="fa-solid fa-bolt"></i>
                 </div>
-                <h1 class="text-2xl font-black text-white tracking-wider">QUICK<span class="text-cyanNeon">BOX</span></h1>
-                <p class="text-xs text-gray-400" id="authSubtitle">Conectado a la Nube en Tiempo Real</p>
-                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyanNeon/10 border border-cyanNeon/30 text-[10px] text-cyanNeon font-mono">
+                <h1 class="text-xl sm:text-2xl font-black text-white tracking-wider">QUICK<span class="text-cyanNeon">BOX</span></h1>
+                <p class="text-[11px] sm:text-xs text-gray-400" id="authSubtitle">Conectado a la Nube en Tiempo Real</p>
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyanNeon/10 border border-cyanNeon/30 text-[10px] text-cyanNeon font-mono">
                     <span class="w-1.5 h-1.5 rounded-full bg-cyanNeon animate-pulse"></span> Multi-Dispositivo Sync
                 </div>
             </div>
 
-            <div class="flex bg-gray-900/90 p-1.5 rounded-2xl border border-gray-800">
-                <button type="button" onclick="setAuthRole('comercio')" id="authRoleBtn-comercio" class="flex-1 py-2 rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1.5 text-cyanNeon bg-gray-800 shadow-md">
-                    <i class="fa-solid fa-store"></i> Comercio
+            <!-- Role Selector Tabs -->
+            <div class="flex bg-gray-900/90 p-1 sm:p-1.5 rounded-xl sm:rounded-2xl border border-gray-800 text-[11px] sm:text-xs">
+                <button type="button" onclick="setAuthRole('comercio')" id="authRoleBtn-comercio" class="flex-1 py-2 rounded-lg sm:rounded-xl font-bold transition-all flex items-center justify-center gap-1 text-cyanNeon bg-gray-800 shadow-md min-h-[38px]">
+                    <i class="fa-solid fa-store"></i> <span class="truncate">Comercio</span>
                 </button>
-                <button type="button" onclick="setAuthRole('repartidor')" id="authRoleBtn-repartidor" class="flex-1 py-2 rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1.5 text-gray-400 hover:text-white">
-                    <i class="fa-solid fa-motorcycle"></i> Repartidor
+                <button type="button" onclick="setAuthRole('repartidor')" id="authRoleBtn-repartidor" class="flex-1 py-2 rounded-lg sm:rounded-xl font-bold transition-all flex items-center justify-center gap-1 text-gray-400 hover:text-white min-h-[38px]">
+                    <i class="fa-solid fa-motorcycle"></i> <span class="truncate">Repartidor</span>
                 </button>
-                <button type="button" onclick="setAuthRole('admin')" id="authRoleBtn-admin" class="flex-1 py-2 rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1.5 text-gray-400 hover:text-white">
-                    <i class="fa-solid fa-user-shield"></i> Admin
+                <button type="button" onclick="setAuthRole('admin')" id="authRoleBtn-admin" class="flex-1 py-2 rounded-lg sm:rounded-xl font-bold transition-all flex items-center justify-center gap-1 text-gray-400 hover:text-white min-h-[38px]">
+                    <i class="fa-solid fa-user-shield"></i> <span class="truncate">Admin</span>
                 </button>
             </div>
 
-            <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4 text-xs">
+            <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-3 sm:space-y-4 text-xs">
                 <div id="registerFields" class="hidden space-y-3">
                     <div>
                         <label class="block text-gray-300 font-semibold mb-1" id="nameLabel">Nombre del Comercio</label>
                         <input type="text" id="authName" placeholder="Ej. Urban Burger Station" 
-                            class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-cyanNeon">
+                            class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-cyanNeon min-h-[42px]">
                     </div>
                     <div id="extraDetailGroup">
                         <label class="block text-gray-300 font-semibold mb-1" id="extraLabel">Dirección del Local</label>
                         <input type="text" id="authExtra" placeholder="Ej. Av. Central 452" 
-                            class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-cyanNeon">
+                            class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-cyanNeon min-h-[42px]">
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-gray-300 font-semibold mb-1">Correo Electrónico</label>
                     <input type="email" id="authEmail" required placeholder="tu@correo.com" 
-                        class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-cyanNeon">
+                        class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-cyanNeon min-h-[42px]">
                 </div>
 
                 <div>
                     <label class="block text-gray-300 font-semibold mb-1">Contraseña</label>
                     <input type="password" id="authPassword" required placeholder="••••••••" 
-                        class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-cyanNeon">
+                        class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-cyanNeon min-h-[42px]">
                 </div>
 
-                <button type="submit" id="authSubmitBtn" class="w-full bg-gradient-primary text-darkBg font-extrabold py-3 rounded-xl text-xs shadow-glowCyan hover:scale-[1.02] transition-transform">
+                <button type="submit" id="authSubmitBtn" class="w-full bg-gradient-primary text-darkBg font-extrabold py-3 rounded-xl text-xs sm:text-sm shadow-glowCyan hover:scale-[1.01] active:scale-[0.99] transition-transform min-h-[44px]">
                     Iniciar Sesión
                 </button>
             </form>
 
             <div class="text-center pt-2 border-t border-gray-800 text-xs text-gray-400">
                 <span id="authToggleText">¿No tienes una cuenta?</span>
-                <button type="button" onclick="toggleAuthMode()" id="authToggleBtn" class="text-cyanNeon font-bold hover:underline ml-1">
+                <button type="button" onclick="toggleAuthMode()" id="authToggleBtn" class="text-cyanNeon font-bold hover:underline ml-1 p-1">
                     Registrarse
                 </button>
             </div>
         </div>
     </div>
 
-    <header class="glass-panel border-b border-gray-800 px-4 py-3 z-40 shrink-0 flex items-center justify-between gap-4">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center text-darkBg text-xl font-black shadow-glowCyan">
+    <header class="glass-panel border-b border-gray-800 px-3 sm:px-6 py-2.5 sm:py-3 z-40 shrink-0 flex items-center justify-between gap-2 sm:gap-4">
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-primary flex items-center justify-center text-darkBg text-lg sm:text-xl font-black shadow-glowCyan">
                 <i class="fa-solid fa-bolt"></i>
             </div>
             <div>
-                <span class="text-xl font-extrabold tracking-wider text-white">QUICK<span class="text-cyanNeon">BOX</span></span>
-                <span class="hidden sm:inline-block text-[10px] bg-cyanNeon/10 text-cyanNeon border border-cyanNeon/30 px-2 py-0.5 rounded-full ml-2 font-mono">CLOUD SYNC</span>
+                <span class="text-base sm:text-xl font-extrabold tracking-wider text-white">QUICK<span class="text-cyanNeon">BOX</span></span>
+                <span class="hidden lg:inline-block text-[10px] bg-cyanNeon/10 text-cyanNeon border border-cyanNeon/30 px-2 py-0.5 rounded-full ml-2 font-mono">CLOUD SYNC</span>
             </div>
         </div>
 
-        <div class="flex items-center bg-gray-900/90 p-1 rounded-2xl border border-gray-800">
-            <button onclick="switchRole('comercio')" id="roleBtn-comercio" class="role-btn px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 text-cyanNeon bg-gray-800 shadow-md">
-                <i class="fa-solid fa-store"></i> <span class="hidden md:inline">Panel Comercio</span>
+        <!-- Role Switcher Navbar -->
+        <div class="flex items-center bg-gray-900/90 p-1 rounded-xl sm:rounded-2xl border border-gray-800 max-w-full overflow-x-auto">
+            <button onclick="switchRole('comercio')" id="roleBtn-comercio" class="role-btn px-2.5 sm:px-3.5 py-1.5 rounded-lg sm:rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-cyanNeon bg-gray-800 shadow-md shrink-0 min-h-[36px]">
+                <i class="fa-solid fa-store"></i> <span class="hidden sm:inline">Comercio</span>
             </button>
-            <button onclick="switchRole('repartidor')" id="roleBtn-repartidor" class="role-btn px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 text-gray-400 hover:text-white">
-                <i class="fa-solid fa-motorcycle"></i> <span class="hidden md:inline">Panel Repartidor</span>
+            <button onclick="switchRole('repartidor')" id="roleBtn-repartidor" class="role-btn px-2.5 sm:px-3.5 py-1.5 rounded-lg sm:rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-gray-400 hover:text-white shrink-0 min-h-[36px]">
+                <i class="fa-solid fa-motorcycle"></i> <span class="hidden sm:inline">Repartidor</span>
             </button>
-            <button onclick="switchRole('admin')" id="roleBtn-admin" class="role-btn px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 text-gray-400 hover:text-white">
-                <i class="fa-solid fa-user-shield"></i> <span class="hidden md:inline">Panel Admin</span>
+            <button onclick="switchRole('admin')" id="roleBtn-admin" class="role-btn px-2.5 sm:px-3.5 py-1.5 rounded-lg sm:rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-gray-400 hover:text-white shrink-0 min-h-[36px]">
+                <i class="fa-solid fa-user-shield"></i> <span class="hidden sm:inline">Admin</span>
             </button>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
             <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emeraldNeon/10 border border-emeraldNeon/30 text-emeraldNeon text-xs font-medium">
                 <span class="w-2 h-2 rounded-full bg-emeraldNeon animate-ping"></span>
-                <span id="userHeaderBadge">Conectado</span>
+                <span id="userHeaderBadge" class="max-w-[120px] truncate">Conectado</span>
             </div>
-            <button onclick="openNewOrderModal()" class="bg-gradient-primary text-darkBg text-xs font-extrabold px-3.5 py-2 rounded-xl shadow-glowCyan hover:scale-105 transition-transform flex items-center gap-2">
-                <i class="fa-solid fa-plus"></i> <span class="hidden sm:inline">Nuevo Pedido</span>
+            <button onclick="openNewOrderModal()" title="Nuevo Pedido" class="bg-gradient-primary text-darkBg text-xs font-extrabold px-3 sm:px-3.5 py-2 rounded-xl shadow-glowCyan hover:scale-105 active:scale-95 transition-transform flex items-center gap-1.5 min-h-[38px]">
+                <i class="fa-solid fa-plus text-sm sm:text-xs"></i> <span class="hidden sm:inline">Nuevo Pedido</span>
             </button>
-            <button onclick="logoutUser()" title="Cerrar Sesión" class="p-2 rounded-xl bg-gray-900 border border-gray-800 text-gray-400 hover:text-white hover:border-pinkNeon/40 transition-colors">
+            <button onclick="logoutUser()" title="Cerrar Sesión" class="p-2 sm:p-2.5 rounded-xl bg-gray-900 border border-gray-800 text-gray-400 hover:text-white hover:border-pinkNeon/40 transition-colors min-h-[38px] min-w-[38px] flex items-center justify-center">
                 <i class="fa-solid fa-right-from-bracket"></i>
             </button>
         </div>
     </header>
 
-    <div class="flex-1 flex flex-col overflow-hidden relative max-w-7xl mx-auto w-full p-4 md:p-6">
+    <div class="flex-1 flex flex-col overflow-hidden relative max-w-7xl mx-auto w-full p-2.5 sm:p-4 md:p-6">
         <div class="flex-1 bg-darkBg flex flex-col overflow-hidden rounded-2xl border border-gray-800">
             
             <!-- COMERCIO PANEL -->
-            <div id="view-comercio" class="role-view flex-1 flex flex-col p-4 md:p-6 overflow-y-auto space-y-5">
-                <div class="glass-panel p-5 rounded-2xl border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div>
+            <div id="view-comercio" class="role-view flex-1 flex flex-col p-3 sm:p-5 md:p-6 overflow-y-auto space-y-4 sm:space-y-5">
+                <div class="glass-panel p-4 sm:p-5 rounded-2xl border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+                    <div class="space-y-0.5">
                         <span class="text-[10px] font-bold text-cyanNeon uppercase tracking-widest">Local Activo en Nube</span>
-                        <h2 class="text-2xl font-bold text-white" id="comercioProfileTitle">Urban Burger Station</h2>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white" id="comercioProfileTitle">Urban Burger Station</h2>
                         <p class="text-xs text-gray-400" id="comercioProfileAddress">Av. Central 452 • En línea</p>
                     </div>
-                    <div class="flex items-center gap-6">
+                    <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4 pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-800/80">
                         <div class="text-left sm:text-right">
-                            <span class="text-xs text-gray-400">Despachos Entregados</span>
-                            <p class="text-2xl font-black text-emeraldNeon" id="storeDispatchCount">0</p>
+                            <span class="text-[11px] text-gray-400">Entregados</span>
+                            <p class="text-xl sm:text-2xl font-black text-emeraldNeon" id="storeDispatchCount">0</p>
                         </div>
-                        <button onclick="openNewOrderModal()" class="bg-gradient-primary text-darkBg text-xs font-extrabold px-4 py-2.5 rounded-xl shadow-glowCyan hover:scale-105 transition-transform flex items-center gap-2">
+                        <button onclick="openNewOrderModal()" class="bg-gradient-primary text-darkBg text-xs font-extrabold px-3.5 py-2.5 rounded-xl shadow-glowCyan hover:scale-105 active:scale-95 transition-transform flex items-center gap-2">
                             <i class="fa-solid fa-paper-plane"></i> Publicar Pedido
                         </button>
                     </div>
                 </div>
 
                 <div>
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                    <div class="flex items-center justify-between mb-3 sm:mb-4">
+                        <h3 class="text-xs sm:text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
                             <i class="fa-solid fa-box-archive text-cyanNeon"></i> Pedidos Solicitados
                         </h3>
-                        <span class="text-xs bg-gray-800 text-gray-300 px-3 py-1 rounded-full font-semibold" id="comercioOrdersBadge">0 Activos</span>
+                        <span class="text-[11px] sm:text-xs bg-gray-800 text-gray-300 px-2.5 py-0.5 sm:py-1 rounded-full font-semibold" id="comercioOrdersBadge">0 Activos</span>
                     </div>
 
-                    <div id="comercioOrdersList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    <div id="comercioOrdersList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"></div>
                 </div>
             </div>
 
             <!-- REPARTIDOR PANEL -->
-            <div id="view-repartidor" class="role-view flex-1 flex flex-col p-4 md:p-6 overflow-y-auto space-y-5 hidden">
-                <div class="glass-panel p-5 rounded-2xl border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 rounded-2xl bg-pinkNeon/20 border border-pinkNeon/40 text-pinkNeon flex items-center justify-center text-2xl font-bold">
+            <div id="view-repartidor" class="role-view flex-1 flex flex-col p-3 sm:p-5 md:p-6 overflow-y-auto space-y-4 sm:space-y-5 hidden">
+                <div class="glass-panel p-4 sm:p-5 rounded-2xl border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+                    <div class="flex items-center gap-3 sm:gap-4">
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-pinkNeon/20 border border-pinkNeon/40 text-pinkNeon flex items-center justify-center text-xl sm:text-2xl font-bold shrink-0">
                             <i class="fa-solid fa-helmet-safety"></i>
                         </div>
                         <div>
-                            <h2 class="text-xl font-bold text-white" id="repartidorProfileName">Carlos 'Rider' Ruiz</h2>
+                            <h2 class="text-lg sm:text-xl font-bold text-white" id="repartidorProfileName">Carlos 'Rider' Ruiz</h2>
                             <div class="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
                                 <span id="repartidorVehicle">Moto Honda 150cc</span> • <span class="text-yellow-400">★ 4.9</span>
                             </div>
                         </div>
                     </div>
 
-                    <button id="driverStatusToggle" onclick="toggleDriverOnline()" class="px-4 py-2 rounded-xl bg-emeraldNeon/20 text-emeraldNeon border border-emeraldNeon/40 text-xs font-bold transition-all">
+                    <button id="driverStatusToggle" onclick="toggleDriverOnline()" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-emeraldNeon/20 text-emeraldNeon border border-emeraldNeon/40 text-xs font-bold transition-all min-h-[40px] flex items-center justify-center gap-2">
                         <i class="fa-solid fa-circle"></i> Disponible
                     </button>
                 </div>
 
                 <div>
-                    <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <h3 class="text-xs sm:text-sm font-bold text-white uppercase tracking-wider mb-3 sm:mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-route text-pinkNeon"></i> Solicitudes Disponibles en la Red
                     </h3>
-                    <div id="driverJobsList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                    <div id="driverJobsList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4"></div>
                 </div>
             </div>
 
             <!-- ADMIN PANEL -->
-            <div id="view-admin" class="role-view flex-1 flex flex-col p-4 md:p-6 overflow-y-auto space-y-5 hidden">
-                <div class="glass-panel p-5 rounded-2xl border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-l-4 border-l-purpleNeon">
+            <div id="view-admin" class="role-view flex-1 flex flex-col p-3 sm:p-5 md:p-6 overflow-y-auto space-y-4 sm:space-y-5 hidden">
+                <div class="glass-panel p-4 sm:p-5 rounded-2xl border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 border-l-4 border-l-purpleNeon">
                     <div>
                         <span class="text-[10px] font-bold text-purpleNeon uppercase tracking-widest"><i class="fa-solid fa-shield-halved"></i> Módulo Administrador</span>
-                        <h2 class="text-2xl font-bold text-white" id="adminProfileTitle">Panel General Cloud</h2>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white" id="adminProfileTitle">Panel General Cloud</h2>
                         <p class="text-xs text-gray-400">Administración de Usuarios y Pedidos Sincronizados</p>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <button onclick="openCreateUserModal('comercio')" class="bg-cyanNeon/20 border border-cyanNeon/50 text-cyanNeon hover:bg-cyanNeon/30 text-xs font-extrabold px-3.5 py-2 rounded-xl transition-all flex items-center gap-2">
+                    <div class="flex items-center gap-2 w-full sm:w-auto justify-stretch sm:justify-end">
+                        <button onclick="openCreateUserModal('comercio')" class="flex-1 sm:flex-initial bg-cyanNeon/20 border border-cyanNeon/50 text-cyanNeon hover:bg-cyanNeon/30 text-xs font-extrabold px-3 py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 min-h-[38px]">
                             <i class="fa-solid fa-plus"></i> + Comercio
                         </button>
-                        <button onclick="openCreateUserModal('repartidor')" class="bg-pinkNeon/20 border border-pinkNeon/50 text-pinkNeon hover:bg-pinkNeon/30 text-xs font-extrabold px-3.5 py-2 rounded-xl transition-all flex items-center gap-2">
+                        <button onclick="openCreateUserModal('repartidor')" class="flex-1 sm:flex-initial bg-pinkNeon/20 border border-pinkNeon/50 text-pinkNeon hover:bg-pinkNeon/30 text-xs font-extrabold px-3 py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 min-h-[38px]">
                             <i class="fa-solid fa-plus"></i> + Repartidor
                         </button>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div class="glass-panel p-4 rounded-xl border-gray-800">
-                        <p class="text-[10px] text-gray-400 uppercase font-semibold">Comercios Registrados</p>
-                        <p class="text-2xl font-black text-cyanNeon mt-1" id="adminCountStores">0</p>
+                <div class="grid grid-cols-3 gap-2.5 sm:gap-4">
+                    <div class="glass-panel p-3 sm:p-4 rounded-xl border-gray-800">
+                        <p class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-semibold truncate">Comercios</p>
+                        <p class="text-lg sm:text-2xl font-black text-cyanNeon mt-0.5 sm:mt-1" id="adminCountStores">0</p>
                     </div>
-                    <div class="glass-panel p-4 rounded-xl border-gray-800">
-                        <p class="text-[10px] text-gray-400 uppercase font-semibold">Repartidores Activos</p>
-                        <p class="text-2xl font-black text-pinkNeon mt-1" id="adminCountDrivers">0</p>
+                    <div class="glass-panel p-3 sm:p-4 rounded-xl border-gray-800">
+                        <p class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-semibold truncate">Repartidores</p>
+                        <p class="text-lg sm:text-2xl font-black text-pinkNeon mt-0.5 sm:mt-1" id="adminCountDrivers">0</p>
                     </div>
-                    <div class="glass-panel p-4 rounded-xl border-gray-800">
-                        <p class="text-[10px] text-gray-400 uppercase font-semibold">Total Pedidos en Sistema</p>
-                        <p class="text-2xl font-black text-white mt-1" id="adminCountOrders">0</p>
+                    <div class="glass-panel p-3 sm:p-4 rounded-xl border-gray-800">
+                        <p class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-semibold truncate">Total Pedidos</p>
+                        <p class="text-lg sm:text-2xl font-black text-white mt-0.5 sm:mt-1" id="adminCountOrders">0</p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="glass-panel p-5 rounded-2xl border-gray-800 space-y-4">
-                        <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+                    <div class="glass-panel p-4 sm:p-5 rounded-2xl border-gray-800 space-y-3 sm:space-y-4">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-2.5">
+                            <h3 class="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
                                 <i class="fa-solid fa-store text-cyanNeon"></i> Comercios Aliados
                             </h3>
                             <button onclick="openCreateUserModal('comercio')" class="text-xs text-cyanNeon hover:underline font-semibold">+ Agregar</button>
                         </div>
-                        <div id="adminStoresList" class="space-y-2 max-h-72 overflow-y-auto pr-1"></div>
+                        <div id="adminStoresList" class="space-y-2 max-h-60 sm:max-h-72 overflow-y-auto pr-1"></div>
                     </div>
 
-                    <div class="glass-panel p-5 rounded-2xl border-gray-800 space-y-4">
-                        <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <div class="glass-panel p-4 sm:p-5 rounded-2xl border-gray-800 space-y-3 sm:space-y-4">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-2.5">
+                            <h3 class="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
                                 <i class="fa-solid fa-motorcycle text-pinkNeon"></i> Repartidores de la Red
                             </h3>
                             <button onclick="openCreateUserModal('repartidor')" class="text-xs text-pinkNeon hover:underline font-semibold">+ Agregar</button>
                         </div>
-                        <div id="adminDriversList" class="space-y-2 max-h-72 overflow-y-auto pr-1"></div>
+                        <div id="adminDriversList" class="space-y-2 max-h-60 sm:max-h-72 overflow-y-auto pr-1"></div>
                     </div>
                 </div>
             </div>
@@ -292,8 +308,8 @@
     </div>
 
     <!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN DE USUARIO -->
-    <div id="deleteConfirmModal" class="fixed inset-0 z-[1001] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-sm rounded-2xl border border-pinkNeon/40 p-6 space-y-4 shadow-2xl relative animate-in fade-in zoom-in duration-200">
+    <div id="deleteConfirmModal" class="fixed inset-0 z-[1001] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4">
+        <div class="glass-panel w-full max-w-sm rounded-2xl border border-pinkNeon/40 p-5 sm:p-6 space-y-4 shadow-2xl relative animate-in fade-in zoom-in duration-200 my-auto">
             <div class="text-center space-y-2">
                 <div class="w-12 h-12 rounded-2xl bg-pinkNeon/20 border border-pinkNeon/40 text-pinkNeon mx-auto flex items-center justify-center text-xl font-bold">
                     <i class="fa-solid fa-trash-can"></i>
@@ -301,111 +317,111 @@
                 <h3 class="text-base font-bold text-white" id="deleteConfirmTitle">¿Eliminar Usuario?</h3>
                 <p class="text-xs text-gray-400" id="deleteConfirmMessage">Esta acción borrará al usuario permanentemente del sistema.</p>
             </div>
-            <div class="pt-2 flex items-center justify-end gap-3">
-                <button type="button" onclick="closeDeleteModal()" class="flex-1 py-2 rounded-xl bg-gray-800 text-gray-300 font-semibold text-xs hover:bg-gray-700 transition-colors">Cancelar</button>
-                <button type="button" id="confirmDeleteBtn" class="flex-1 py-2 rounded-xl bg-pinkNeon text-white font-extrabold text-xs shadow-glowPink hover:bg-pink-600 transition-colors">Eliminar</button>
+            <div class="pt-2 flex items-center justify-end gap-2.5">
+                <button type="button" onclick="closeDeleteModal()" class="flex-1 py-2.5 rounded-xl bg-gray-800 text-gray-300 font-semibold text-xs hover:bg-gray-700 transition-colors min-h-[40px]">Cancelar</button>
+                <button type="button" id="confirmDeleteBtn" class="flex-1 py-2.5 rounded-xl bg-pinkNeon text-white font-extrabold text-xs shadow-glowPink hover:bg-pink-600 transition-colors min-h-[40px]">Eliminar</button>
             </div>
         </div>
     </div>
 
     <!-- MODAL: ADMIN CREAR USUARIOS -->
-    <div id="adminCreateUserModal" class="fixed inset-0 z-[999] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-md rounded-2xl border border-purpleNeon/40 p-6 space-y-5 shadow-2xl relative animate-in fade-in zoom-in duration-200">
+    <div id="adminCreateUserModal" class="fixed inset-0 z-[999] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="glass-panel w-full max-w-md rounded-2xl border border-purpleNeon/40 p-5 sm:p-6 space-y-4 sm:space-y-5 shadow-2xl relative animate-in fade-in zoom-in duration-200 my-auto">
             <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-                <h3 class="text-lg font-bold text-white flex items-center gap-2" id="adminModalTitle">
+                <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2 truncate" id="adminModalTitle">
                     <i class="fa-solid fa-user-plus text-purpleNeon"></i> Agregar Nuevo Usuario
                 </h3>
-                <button onclick="closeAdminCreateUserModal()" class="text-gray-400 hover:text-white text-sm">
-                    <i class="fa-solid fa-xmark"></i>
+                <button onclick="closeAdminCreateUserModal()" class="text-gray-400 hover:text-white p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
 
-            <form id="adminCreateUserForm" onsubmit="handleAdminCreateUser(event)" class="space-y-4 text-xs">
+            <form id="adminCreateUserForm" onsubmit="handleAdminCreateUser(event)" class="space-y-3 sm:space-y-4 text-xs">
                 <input type="hidden" id="adminUserType" value="comercio">
 
                 <div>
                     <label class="block text-gray-300 font-semibold mb-1" id="adminNameLabel">Nombre del Comercio</label>
                     <input type="text" id="adminUserName" required placeholder="Ej. Pizzeria Bella Napoli" 
-                        class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-purpleNeon">
+                        class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-purpleNeon min-h-[42px]">
                 </div>
 
                 <div>
                     <label class="block text-gray-300 font-semibold mb-1" id="adminExtraLabel">Dirección del Local</label>
                     <input type="text" id="adminUserExtra" required placeholder="Ej. Calle Mayor 123" 
-                        class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-purpleNeon">
+                        class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-purpleNeon min-h-[42px]">
                 </div>
 
                 <div>
                     <label class="block text-gray-300 font-semibold mb-1">Correo Electrónico:</label>
                     <input type="email" id="adminUserEmail" required placeholder="comercio@ejemplo.com" 
-                        class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-purpleNeon">
+                        class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-purpleNeon min-h-[42px]">
                 </div>
 
                 <div>
                     <label class="block text-gray-300 font-semibold mb-1">Contraseña Provisoria:</label>
                     <input type="password" id="adminUserPassword" required placeholder="••••••••" 
-                        class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-purpleNeon">
+                        class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-purpleNeon min-h-[42px]">
                 </div>
 
-                <div class="pt-2 flex justify-end gap-3">
-                    <button type="button" onclick="closeAdminCreateUserModal()" class="px-4 py-2 rounded-xl bg-gray-800 text-gray-300 font-semibold">Cancelar</button>
-                    <button type="submit" class="px-5 py-2 rounded-xl bg-purpleNeon text-white font-extrabold shadow-glowPurple hover:bg-purple-600 transition-colors">Guardar y Dar de Alta</button>
+                <div class="pt-2 flex justify-end gap-2.5">
+                    <button type="button" onclick="closeAdminCreateUserModal()" class="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-gray-800 text-gray-300 font-semibold min-h-[40px]">Cancelar</button>
+                    <button type="submit" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-purpleNeon text-white font-extrabold shadow-glowPurple hover:bg-purple-600 transition-colors min-h-[40px]">Guardar Usuario</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- MODAL: CREAR NUEVO PEDIDO COMERCIO -->
-    <div id="newOrderModal" class="fixed inset-0 z-[999] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-md rounded-2xl border border-cyanNeon/30 p-6 space-y-5 shadow-2xl relative animate-in fade-in zoom-in duration-200">
+    <div id="newOrderModal" class="fixed inset-0 z-[999] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="glass-panel w-full max-w-md rounded-2xl border border-cyanNeon/30 p-5 sm:p-6 space-y-4 sm:space-y-5 shadow-2xl relative animate-in fade-in zoom-in duration-200 my-auto">
             <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
                     <i class="fa-solid fa-paper-plane text-cyanNeon"></i> Publicar Nuevo Envío
                 </h3>
-                <button onclick="closeNewOrderModal()" class="text-gray-400 hover:text-white text-sm">
-                    <i class="fa-solid fa-xmark"></i>
+                <button onclick="closeNewOrderModal()" class="text-gray-400 hover:text-white p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
 
-            <form id="createOrderForm" onsubmit="handleCreateOrder(event)" class="space-y-4 text-xs">
+            <form id="createOrderForm" onsubmit="handleCreateOrder(event)" class="space-y-3 sm:space-y-4 text-xs">
                 <div>
                     <label class="block text-gray-300 font-semibold mb-1">Nombre / Detalle del Paquete:</label>
                     <input type="text" id="orderTitle" required placeholder="Ej. Combo Doble Burger + Papas" 
-                        class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-cyanNeon">
+                        class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-cyanNeon min-h-[42px]">
                 </div>
 
                 <div>
                     <label class="block text-gray-300 font-semibold mb-1">Dirección del Cliente / Destino:</label>
                     <input type="text" id="orderAddress" required placeholder="Ej. Calle Las Heras 742, Apt 4B" 
-                        class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-cyanNeon">
+                        class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-cyanNeon min-h-[42px]">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-gray-300 font-semibold mb-1">Monto Pedido ($):</label>
                         <input type="number" id="orderPrice" required value="24.50" step="0.5" 
-                            class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-cyanNeon">
+                            class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-cyanNeon min-h-[42px]">
                     </div>
                     <div>
                         <label class="block text-gray-300 font-semibold mb-1">Tarifa Envío ($):</label>
                         <input type="number" id="orderDeliveryFee" required value="4.00" step="0.5" 
-                            class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-cyanNeon">
+                            class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-cyanNeon min-h-[42px]">
                     </div>
                 </div>
 
-                <div class="pt-2 flex justify-end gap-3">
-                    <button type="button" onclick="closeNewOrderModal()" class="px-4 py-2 rounded-xl bg-gray-800 text-gray-300 font-semibold">Cancelar</button>
-                    <button type="submit" class="px-5 py-2 rounded-xl bg-gradient-primary text-darkBg font-extrabold shadow-glowCyan">Lanzar a la Red Cloud</button>
+                <div class="pt-2 flex justify-end gap-2.5">
+                    <button type="button" onclick="closeNewOrderModal()" class="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-gray-800 text-gray-300 font-semibold min-h-[40px]">Cancelar</button>
+                    <button type="submit" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-gradient-primary text-darkBg font-extrabold shadow-glowCyan min-h-[40px]">Lanzar a la Red Cloud</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- FOOTER -->
-    <footer class="glass-panel border-t border-gray-800 px-4 py-2.5 z-40 shrink-0 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-gray-400">
+    <footer class="glass-panel border-t border-gray-800 px-3 sm:px-4 py-2 sm:py-2.5 z-40 shrink-0 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-2 text-[10px] sm:text-[11px] text-gray-400">
         <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-cyanNeon inline-block"></span>
-            <span>Sistema Multi-Dispositivo en Nube Tiempo Real (Firebase)</span>
+            <span class="w-2 h-2 rounded-full bg-cyanNeon inline-block shrink-0"></span>
+            <span class="truncate">Sistema Multi-Dispositivo en Nube Tiempo Real (Firebase)</span>
         </div>
         <div class="font-bold tracking-wider text-gray-300 bg-gray-900/90 px-3 py-1 rounded-full border border-gray-800">
             APLICACIÓN CREADA POR <span class="text-cyanNeon font-extrabold">ANDRÉS LEÓN</span>
@@ -442,13 +458,34 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Firestore collections path (Strict Rule 1)
+        // Firestore collections path
         const USERS_COLLECTION = collection(db, 'artifacts', appId, 'public', 'data', 'users');
         const ORDERS_COLLECTION = collection(db, 'artifacts', appId, 'public', 'data', 'orders');
 
         // Application Global States
         let registeredUsers = [];
-        let orders = [];
+        let orders = [
+            {
+                id: 'QB-101',
+                title: 'Combo Doble Burger + Papas',
+                store: 'Urban Burger Station',
+                address: 'Av. Las Heras 742, Apt 4B',
+                price: 24.50,
+                fee: 4.00,
+                status: 'Esperando Repartidor',
+                rider: null
+            },
+            {
+                id: 'QB-102',
+                title: 'Pizza Familiar Muzzarella',
+                store: 'Pizzeria Bella Napoli',
+                address: 'Calle San Martín 1120',
+                price: 18.00,
+                fee: 3.50,
+                status: 'Esperando Repartidor',
+                rider: null
+            }
+        ];
         let currentUser = null;
         let isAuthReady = false;
 
@@ -464,6 +501,9 @@
                 setupRealtimeListeners();
             } catch (error) {
                 console.error("Firebase Auth Error:", error);
+                if (typeof window.renderAllViews === 'function') {
+                    window.renderAllViews();
+                }
             }
         }
 
@@ -473,10 +513,13 @@
 
             // Sync Users Collection
             onSnapshot(USERS_COLLECTION, (snapshot) => {
-                registeredUsers = [];
+                const cloudUsers = [];
                 snapshot.forEach(docSnap => {
-                    registeredUsers.push({ id: docSnap.id, ...docSnap.data() });
+                    cloudUsers.push({ id: docSnap.id, ...docSnap.data() });
                 });
+                if (cloudUsers.length > 0) {
+                    registeredUsers = cloudUsers;
+                }
                 renderAdminPanel();
             }, (error) => {
                 console.error("Error listening to users:", error);
@@ -484,10 +527,13 @@
 
             // Sync Orders Collection in Realtime across all devices
             onSnapshot(ORDERS_COLLECTION, (snapshot) => {
-                orders = [];
+                const cloudOrders = [];
                 snapshot.forEach(docSnap => {
-                    orders.push({ id: docSnap.id, ...docSnap.data() });
+                    cloudOrders.push({ id: docSnap.id, ...docSnap.data() });
                 });
+                if (cloudOrders.length > 0) {
+                    orders = cloudOrders;
+                }
                 if (typeof window.renderAllViews === 'function') {
                     window.renderAllViews();
                 }
@@ -498,6 +544,8 @@
 
         // Expose functions globally for UI handlers
         window.saveUserToCloud = async function(userObj) {
+            registeredUsers.push(userObj);
+            if (typeof window.renderAllViews === 'function') window.renderAllViews();
             if (!isAuthReady) return;
             try {
                 const userDoc = doc(db, 'artifacts', appId, 'public', 'data', 'users', userObj.id);
@@ -508,6 +556,8 @@
         };
 
         window.deleteUserFromCloud = async function(userId) {
+            registeredUsers = registeredUsers.filter(u => u.id !== userId);
+            if (typeof window.renderAllViews === 'function') window.renderAllViews();
             if (!isAuthReady) return;
             try {
                 const userDoc = doc(db, 'artifacts', appId, 'public', 'data', 'users', userId);
@@ -518,6 +568,8 @@
         };
 
         window.createOrderInCloud = async function(orderObj) {
+            orders.unshift(orderObj);
+            if (typeof window.renderAllViews === 'function') window.renderAllViews();
             if (!isAuthReady) return;
             try {
                 const orderDoc = doc(db, 'artifacts', appId, 'public', 'data', 'orders', orderObj.id);
@@ -528,6 +580,11 @@
         };
 
         window.updateOrderStatusInCloud = async function(orderId, updateData) {
+            const targetOrder = orders.find(o => o.id === orderId);
+            if (targetOrder) {
+                Object.assign(targetOrder, updateData);
+                if (typeof window.renderAllViews === 'function') window.renderAllViews();
+            }
             if (!isAuthReady) return;
             try {
                 const orderDoc = doc(db, 'artifacts', appId, 'public', 'data', 'orders', orderId);
@@ -726,13 +783,13 @@
 
             if (storesList) {
                 storesList.innerHTML = stores.map(s => `
-                    <div class="bg-gray-900/80 p-3 rounded-xl border border-gray-800 flex items-center justify-between text-xs hover:border-cyanNeon/30 transition-colors">
-                        <div>
-                            <p class="font-bold text-white">${s.name}</p>
-                            <p class="text-[11px] text-gray-400"><i class="fa-solid fa-location-dot"></i> ${s.extra} • ${s.email}</p>
+                    <div class="bg-gray-900/80 p-2.5 sm:p-3 rounded-xl border border-gray-800 flex items-center justify-between text-xs hover:border-cyanNeon/30 transition-colors">
+                        <div class="truncate mr-2">
+                            <p class="font-bold text-white truncate">${s.name}</p>
+                            <p class="text-[10px] sm:text-[11px] text-gray-400 truncate"><i class="fa-solid fa-location-dot"></i> ${s.extra}</p>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span class="px-2 py-0.5 rounded-full text-[10px] bg-emeraldNeon/10 border border-emeraldNeon/30 text-emeraldNeon font-bold">Activo Cloud</span>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <span class="hidden sm:inline-block px-2 py-0.5 rounded-full text-[10px] bg-emeraldNeon/10 border border-emeraldNeon/30 text-emeraldNeon font-bold">Activo Cloud</span>
                             <button onclick="promptDeleteUser('${s.id}')" title="Eliminar Comercio" class="p-1.5 rounded-lg bg-gray-800 text-gray-400 hover:text-pinkNeon hover:bg-pinkNeon/10 transition-colors">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
@@ -743,13 +800,13 @@
 
             if (driversList) {
                 driversList.innerHTML = drivers.map(d => `
-                    <div class="bg-gray-900/80 p-3 rounded-xl border border-gray-800 flex items-center justify-between text-xs hover:border-pinkNeon/30 transition-colors">
-                        <div>
-                            <p class="font-bold text-white">${d.name}</p>
-                            <p class="text-[11px] text-gray-400"><i class="fa-solid fa-motorcycle"></i> ${d.extra} • ${d.email}</p>
+                    <div class="bg-gray-900/80 p-2.5 sm:p-3 rounded-xl border border-gray-800 flex items-center justify-between text-xs hover:border-pinkNeon/30 transition-colors">
+                        <div class="truncate mr-2">
+                            <p class="font-bold text-white truncate">${d.name}</p>
+                            <p class="text-[10px] sm:text-[11px] text-gray-400 truncate"><i class="fa-solid fa-motorcycle"></i> ${d.extra}</p>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span class="px-2 py-0.5 rounded-full text-[10px] bg-cyanNeon/10 border border-cyanNeon/30 text-cyanNeon font-bold">Verificado</span>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <span class="hidden sm:inline-block px-2 py-0.5 rounded-full text-[10px] bg-cyanNeon/10 border border-cyanNeon/30 text-cyanNeon font-bold">Verificado</span>
                             <button onclick="promptDeleteUser('${d.id}')" title="Eliminar Repartidor" class="p-1.5 rounded-lg bg-gray-800 text-gray-400 hover:text-pinkNeon hover:bg-pinkNeon/10 transition-colors">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
@@ -857,7 +914,7 @@
 
             orders.forEach(order => {
                 const card = document.createElement('div');
-                card.className = 'glass-panel p-4 rounded-xl border-gray-800 flex flex-col justify-between space-y-3';
+                card.className = 'glass-panel p-3.5 sm:p-4 rounded-xl border-gray-800 flex flex-col justify-between space-y-3';
 
                 let statusColor = 'text-yellow-400 border-yellow-400/30 bg-yellow-400/10';
                 if(order.status === 'En Camino') statusColor = 'text-cyanNeon border-cyanNeon/30 bg-cyanNeon/10';
@@ -865,16 +922,16 @@
 
                 card.innerHTML = `
                     <div class="space-y-2">
-                        <div class="flex items-center justify-between text-xs">
-                            <span class="font-bold text-white">${order.id} - ${order.title}</span>
-                            <span class="px-2 py-0.5 rounded-full border text-[10px] font-bold ${statusColor}">${order.status}</span>
+                        <div class="flex items-center justify-between text-xs gap-2">
+                            <span class="font-bold text-white truncate">${order.id} - ${order.title}</span>
+                            <span class="px-2 py-0.5 rounded-full border text-[10px] font-bold shrink-0 ${statusColor}">${order.status}</span>
                         </div>
                         <p class="text-xs text-gray-400"><i class="fa-solid fa-location-dot text-gray-500"></i> ${order.address}</p>
                         ${order.rider ? `<p class="text-[11px] text-cyanNeon font-semibold"><i class="fa-solid fa-motorcycle"></i> Asignado a: ${order.rider}</p>` : ''}
                     </div>
-                    <div class="flex items-center justify-between pt-3 border-t border-gray-800 text-xs">
+                    <div class="flex items-center justify-between pt-2.5 border-t border-gray-800 text-xs">
                         <span class="text-gray-400">Total: <strong class="text-white">$${parseFloat(order.price).toFixed(2)}</strong></span>
-                        <button onclick="shareWhatsApp('${order.id}', '${order.status}')" class="text-emeraldNeon hover:underline text-[11px] font-semibold flex items-center gap-1">
+                        <button onclick="shareWhatsApp('${order.id}', '${order.status}')" class="text-emeraldNeon hover:underline text-[11px] font-semibold flex items-center gap-1 p-1">
                             <i class="fa-brands fa-whatsapp"></i> Notificar
                         </button>
                     </div>
@@ -888,9 +945,11 @@
             const orders = window.getOrders ? window.getOrders() : [];
             if (!list) return;
 
-            // Display available orders or orders accepted by this driver
             const currentRiderName = currentUser ? currentUser.name : null;
-            const available = orders.filter(o => o.status === 'Esperando Repartidor' || (o.rider && currentRiderName && o.rider === currentRiderName));
+            const available = orders.filter(o => 
+                o.status === 'Esperando Repartidor' || 
+                o.status === 'En Camino'
+            );
 
             if(available.length === 0) {
                 list.innerHTML = `<div class="col-span-full text-xs text-gray-500 text-center py-8 glass-panel rounded-2xl border-gray-800">No hay solicitudes pendientes en la red nube.</div>`;
@@ -901,21 +960,29 @@
             available.forEach(job => {
                 const card = document.createElement('div');
                 const isMyJob = job.rider && currentRiderName && job.rider === currentRiderName;
-                card.className = `glass-panel p-4 rounded-2xl ${isMyJob ? 'border-emeraldNeon/40 bg-emeraldNeon/5' : 'border-cyanNeon/30'} flex flex-col justify-between space-y-4`;
+                card.className = `glass-panel p-3.5 sm:p-4 rounded-2xl ${isMyJob ? 'border-emeraldNeon/40 bg-emeraldNeon/5' : 'border-cyanNeon/30'} flex flex-col justify-between space-y-3 sm:space-y-4`;
                 
                 let actionButtonHtml = '';
                 if (job.status === 'Esperando Repartidor') {
                     actionButtonHtml = `
-                        <button onclick="acceptOrder('${job.id}')" class="w-full bg-gradient-primary text-darkBg font-extrabold py-2.5 rounded-xl text-xs shadow-glowCyan hover:scale-[1.02] transition-transform">
-                            Aceptar Carrera en Nube
+                        <button onclick="acceptOrder('${job.id}')" class="w-full bg-gradient-primary text-darkBg font-extrabold py-2.5 rounded-xl text-xs shadow-glowCyan hover:scale-[1.01] active:scale-[0.99] transition-transform flex items-center justify-center gap-2 min-h-[40px]">
+                            <i class="fa-solid fa-motorcycle"></i> Aceptar Carrera en Nube
                         </button>
                     `;
-                } else if (job.status === 'En Camino' && isMyJob) {
-                    actionButtonHtml = `
-                        <button onclick="completeOrder('${job.id}')" class="w-full bg-emeraldNeon text-darkBg font-extrabold py-2.5 rounded-xl text-xs shadow-glowCyan hover:scale-[1.02] transition-transform">
-                            Marcar como Entregado
-                        </button>
-                    `;
+                } else if (job.status === 'En Camino') {
+                    if (isMyJob) {
+                        actionButtonHtml = `
+                            <button onclick="completeOrder('${job.id}')" class="w-full bg-emeraldNeon text-darkBg font-extrabold py-2.5 rounded-xl text-xs shadow-glowCyan hover:scale-[1.01] active:scale-[0.99] transition-transform flex items-center justify-center gap-2 min-h-[40px]">
+                                <i class="fa-solid fa-check"></i> Marcar como Entregado
+                            </button>
+                        `;
+                    } else {
+                        actionButtonHtml = `
+                            <div class="w-full text-center py-2 bg-gray-800/80 border border-gray-700 text-gray-400 rounded-xl text-xs font-semibold">
+                                Tomado por: ${job.rider}
+                            </div>
+                        `;
+                    }
                 } else {
                     actionButtonHtml = `
                         <div class="w-full text-center py-2 bg-emeraldNeon/10 border border-emeraldNeon/30 text-emeraldNeon rounded-xl text-xs font-bold">
@@ -925,18 +992,18 @@
                 }
 
                 card.innerHTML = `
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <span class="text-[10px] text-cyanNeon font-bold uppercase">${job.store}</span>
-                                <h4 class="text-sm font-bold text-white">${job.title}</h4>
+                    <div class="space-y-2.5">
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="truncate">
+                                <span class="text-[10px] text-cyanNeon font-bold uppercase tracking-wider block truncate">${job.store || 'Comercio'}</span>
+                                <h4 class="text-xs sm:text-sm font-bold text-white truncate">${job.title}</h4>
                             </div>
-                            <span class="text-lg font-black text-emeraldNeon">+$${parseFloat(job.fee).toFixed(2)}</span>
+                            <span class="text-base sm:text-lg font-black text-emeraldNeon shrink-0">+$${parseFloat(job.fee || 4.00).toFixed(2)}</span>
                         </div>
                         <div class="text-xs text-gray-400 space-y-1">
-                            <p><i class="fa-solid fa-store text-gray-500 w-4"></i> Retiro: ${job.store}</p>
-                            <p><i class="fa-solid fa-flag-checkered text-gray-500 w-4"></i> Entrega: ${job.address}</p>
-                            ${job.rider ? `<p class="text-cyanNeon font-semibold"><i class="fa-solid fa-motorcycle w-4"></i> Rider: ${job.rider}</p>` : ''}
+                            <p class="truncate"><i class="fa-solid fa-store text-gray-500 w-4"></i> Retiro: <strong class="text-gray-200">${job.store || 'Local'}</strong></p>
+                            <p class="truncate"><i class="fa-solid fa-flag-checkered text-gray-500 w-4"></i> Entrega: <strong class="text-gray-200">${job.address}</strong></p>
+                            ${job.rider ? `<p class="text-cyanNeon font-semibold truncate"><i class="fa-solid fa-motorcycle w-4"></i> Repartidor: ${job.rider}</p>` : ''}
                         </div>
                     </div>
                     ${actionButtonHtml}
@@ -1027,11 +1094,11 @@
             isDriverOnline = !isDriverOnline;
             const btn = document.getElementById('driverStatusToggle');
             if(isDriverOnline) {
-                btn.className = 'px-4 py-2 rounded-xl bg-emeraldNeon/20 text-emeraldNeon border border-emeraldNeon/40 text-xs font-bold transition-all';
+                btn.className = 'w-full sm:w-auto px-4 py-2.5 rounded-xl bg-emeraldNeon/20 text-emeraldNeon border border-emeraldNeon/40 text-xs font-bold transition-all min-h-[40px] flex items-center justify-center gap-2';
                 btn.innerHTML = `<i class="fa-solid fa-circle"></i> Disponible`;
                 showToast('Estado: DISPONIBLE', 'info');
             } else {
-                btn.className = 'px-4 py-2 rounded-xl bg-gray-800 text-gray-400 border border-gray-700 text-xs font-bold transition-all';
+                btn.className = 'w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gray-800 text-gray-400 border border-gray-700 text-xs font-bold transition-all min-h-[40px] flex items-center justify-center gap-2';
                 btn.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Ocupado`;
                 showToast('Estado: OCUPADO', 'info');
             }
@@ -1045,8 +1112,8 @@
             let borderColor = 'border-cyanNeon/40';
             if(type === 'success') borderColor = 'border-emeraldNeon/40';
 
-            toast.className = `glass-panel px-4 py-2.5 rounded-xl border ${borderColor} text-xs font-semibold text-white shadow-xl pointer-events-auto flex items-center gap-2 animate-in slide-in-from-right duration-200`;
-            toast.innerHTML = `<i class="fa-solid fa-cloud text-cyanNeon"></i> ${message}`;
+            toast.className = `glass-panel px-3.5 py-2.5 rounded-xl border ${borderColor} text-xs font-semibold text-white shadow-xl pointer-events-auto flex items-center gap-2 animate-in slide-in-from-right duration-200`;
+            toast.innerHTML = `<i class="fa-solid fa-cloud text-cyanNeon shrink-0"></i> <span>${message}</span>`;
 
             container.appendChild(toast);
 
