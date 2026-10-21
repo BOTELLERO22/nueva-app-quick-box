@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUICK BOX - Platform Network</title>
+    <title>QUICK BOX - Platform Network Cloud</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,10 +12,6 @@
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Leaflet JS Map CSS & JS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -56,20 +52,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .text-gradient-pink {
-            background: linear-gradient(135deg, #FF007A 0%, #FF758C 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
         .bg-gradient-primary {
             background: linear-gradient(135deg, #00F2FE 0%, #4FACFE 100%);
-        }
-        .leaflet-container {
-            background: #0b0f19 !important;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        .leaflet-tile-pane {
-            filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3);
         }
         ::-webkit-scrollbar {
             width: 6px;
@@ -78,34 +62,25 @@
         ::-webkit-scrollbar-track { background: #090D16; }
         ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #334155; }
-        
-        .pulse-marker {
-            box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.7);
-            animation: pulse-ring 1.8s infinite cubic-bezier(0.66, 0, 0, 1);
-        }
-        @keyframes pulse-ring {
-            to { box-shadow: 0 0 0 15px rgba(0, 242, 254, 0); }
-        }
     </style>
 </head>
 <body class="bg-darkBg text-gray-100 font-sans antialiased h-full flex flex-col overflow-hidden selection:bg-cyanNeon selection:text-darkBg">
 
-    <!-- Toast Notifications Container -->
     <div id="toastContainer" class="fixed top-20 right-4 z-[9999] flex flex-col gap-2 pointer-events-none"></div>
 
-    <!-- AUTH OVERLAY / LOGIN SCREEN -->
     <div id="authScreen" class="fixed inset-0 z-[10000] bg-darkBg/95 backdrop-blur-md flex items-center justify-center p-4">
         <div class="glass-panel w-full max-w-md rounded-3xl border border-cyanNeon/30 p-8 space-y-6 shadow-glowCyan relative animate-in fade-in zoom-in duration-300">
-            <!-- Auth Header -->
             <div class="text-center space-y-2">
                 <div class="w-14 h-14 rounded-2xl bg-gradient-primary mx-auto flex items-center justify-center text-darkBg text-2xl font-black shadow-glowCyan mb-3">
                     <i class="fa-solid fa-bolt"></i>
                 </div>
                 <h1 class="text-2xl font-black text-white tracking-wider">QUICK<span class="text-cyanNeon">BOX</span></h1>
-                <p class="text-xs text-gray-400" id="authSubtitle">Inicia sesión en la Red de Entregas</p>
+                <p class="text-xs text-gray-400" id="authSubtitle">Conectado a la Nube en Tiempo Real</p>
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyanNeon/10 border border-cyanNeon/30 text-[10px] text-cyanNeon font-mono">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyanNeon animate-pulse"></span> Multi-Dispositivo Sync
+                </div>
             </div>
 
-            <!-- Role Selector Tabs in Login -->
             <div class="flex bg-gray-900/90 p-1.5 rounded-2xl border border-gray-800">
                 <button type="button" onclick="setAuthRole('comercio')" id="authRoleBtn-comercio" class="flex-1 py-2 rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1.5 text-cyanNeon bg-gray-800 shadow-md">
                     <i class="fa-solid fa-store"></i> Comercio
@@ -118,9 +93,7 @@
                 </button>
             </div>
 
-            <!-- Login / Register Form -->
             <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4 text-xs">
-                <!-- Registration Fields (hidden by default) -->
                 <div id="registerFields" class="hidden space-y-3">
                     <div>
                         <label class="block text-gray-300 font-semibold mb-1" id="nameLabel">Nombre del Comercio</label>
@@ -151,7 +124,6 @@
                 </button>
             </form>
 
-            <!-- Toggle Login / Register -->
             <div class="text-center pt-2 border-t border-gray-800 text-xs text-gray-400">
                 <span id="authToggleText">¿No tienes una cuenta?</span>
                 <button type="button" onclick="toggleAuthMode()" id="authToggleBtn" class="text-cyanNeon font-bold hover:underline ml-1">
@@ -161,20 +133,17 @@
         </div>
     </div>
 
-    <!-- HEADER / ROLE SELECTOR BAR -->
     <header class="glass-panel border-b border-gray-800 px-4 py-3 z-40 shrink-0 flex items-center justify-between gap-4">
-        <!-- Brand Logo -->
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center text-darkBg text-xl font-black shadow-glowCyan">
                 <i class="fa-solid fa-bolt"></i>
             </div>
             <div>
                 <span class="text-xl font-extrabold tracking-wider text-white">QUICK<span class="text-cyanNeon">BOX</span></span>
-                <span class="hidden sm:inline-block text-[10px] bg-cyanNeon/10 text-cyanNeon border border-cyanNeon/30 px-2 py-0.5 rounded-full ml-2 font-mono">NET-HUB v4.0</span>
+                <span class="hidden sm:inline-block text-[10px] bg-cyanNeon/10 text-cyanNeon border border-cyanNeon/30 px-2 py-0.5 rounded-full ml-2 font-mono">CLOUD SYNC</span>
             </div>
         </div>
 
-        <!-- Role Selector Pills -->
         <div class="flex items-center bg-gray-900/90 p-1 rounded-2xl border border-gray-800">
             <button onclick="switchRole('comercio')" id="roleBtn-comercio" class="role-btn px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 text-cyanNeon bg-gray-800 shadow-md">
                 <i class="fa-solid fa-store"></i> <span class="hidden md:inline">Panel Comercio</span>
@@ -187,7 +156,6 @@
             </button>
         </div>
 
-        <!-- Action Quick Status & User Profile -->
         <div class="flex items-center gap-3">
             <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emeraldNeon/10 border border-emeraldNeon/30 text-emeraldNeon text-xs font-medium">
                 <span class="w-2 h-2 rounded-full bg-emeraldNeon animate-ping"></span>
@@ -196,32 +164,27 @@
             <button onclick="openNewOrderModal()" class="bg-gradient-primary text-darkBg text-xs font-extrabold px-3.5 py-2 rounded-xl shadow-glowCyan hover:scale-105 transition-transform flex items-center gap-2">
                 <i class="fa-solid fa-plus"></i> <span class="hidden sm:inline">Nuevo Pedido</span>
             </button>
-            <!-- User Profile & Logout -->
             <button onclick="logoutUser()" title="Cerrar Sesión" class="p-2 rounded-xl bg-gray-900 border border-gray-800 text-gray-400 hover:text-white hover:border-pinkNeon/40 transition-colors">
                 <i class="fa-solid fa-right-from-bracket"></i>
             </button>
         </div>
     </header>
 
-    <!-- MAIN DASHBOARD CONTENT AREA -->
     <div class="flex-1 flex flex-col overflow-hidden relative max-w-7xl mx-auto w-full p-4 md:p-6">
-
-        <!-- DYNAMIC PANEL VIEWS -->
         <div class="flex-1 bg-darkBg flex flex-col overflow-hidden rounded-2xl border border-gray-800">
             
-            <!-- VIEW 1: COMERCIO PANEL -->
+            <!-- COMERCIO PANEL -->
             <div id="view-comercio" class="role-view flex-1 flex flex-col p-4 md:p-6 overflow-y-auto space-y-5">
-                <!-- Banner Comercio -->
                 <div class="glass-panel p-5 rounded-2xl border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div>
-                        <span class="text-[10px] font-bold text-cyanNeon uppercase tracking-widest">Local Activo</span>
+                        <span class="text-[10px] font-bold text-cyanNeon uppercase tracking-widest">Local Activo en Nube</span>
                         <h2 class="text-2xl font-bold text-white" id="comercioProfileTitle">Urban Burger Station</h2>
                         <p class="text-xs text-gray-400" id="comercioProfileAddress">Av. Central 452 • En línea</p>
                     </div>
                     <div class="flex items-center gap-6">
                         <div class="text-left sm:text-right">
-                            <span class="text-xs text-gray-400">Despachos Hoy</span>
-                            <p class="text-2xl font-black text-white" id="storeDispatchCount">18</p>
+                            <span class="text-xs text-gray-400">Despachos Entregados</span>
+                            <p class="text-2xl font-black text-emeraldNeon" id="storeDispatchCount">0</p>
                         </div>
                         <button onclick="openNewOrderModal()" class="bg-gradient-primary text-darkBg text-xs font-extrabold px-4 py-2.5 rounded-xl shadow-glowCyan hover:scale-105 transition-transform flex items-center gap-2">
                             <i class="fa-solid fa-paper-plane"></i> Publicar Pedido
@@ -229,7 +192,6 @@
                     </div>
                 </div>
 
-                <!-- Active Orders Grid -->
                 <div>
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
@@ -238,40 +200,12 @@
                         <span class="text-xs bg-gray-800 text-gray-300 px-3 py-1 rounded-full font-semibold" id="comercioOrdersBadge">0 Activos</span>
                     </div>
 
-                    <div id="comercioOrdersList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <!-- Dynamic List -->
-                    </div>
-                </div>
-
-                <!-- Quick Inventory / Menu Status -->
-                <div class="glass-panel p-5 rounded-2xl border-gray-800">
-                    <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-list-check text-purpleNeon"></i> Estado del Menú / Capacidad
-                    </h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-                        <div class="bg-gray-900/80 p-3 rounded-xl border border-gray-800 flex items-center justify-between">
-                            <span>Cocina Satélite</span>
-                            <span class="text-emeraldNeon font-bold">85% Cap.</span>
-                        </div>
-                        <div class="bg-gray-900/80 p-3 rounded-xl border border-gray-800 flex items-center justify-between">
-                            <span>Stock Paquetes</span>
-                            <span class="text-cyanNeon font-bold">42 Disp.</span>
-                        </div>
-                        <div class="bg-gray-900/80 p-3 rounded-xl border border-gray-800 flex items-center justify-between">
-                            <span>Repartidores Conectados</span>
-                            <span class="text-pinkNeon font-bold" id="statRiders">6 Activos</span>
-                        </div>
-                        <div class="bg-gray-900/80 p-3 rounded-xl border border-gray-800 flex items-center justify-between">
-                            <span>Demora Promedio</span>
-                            <span class="text-cyanNeon font-bold">12 min</span>
-                        </div>
-                    </div>
+                    <div id="comercioOrdersList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
                 </div>
             </div>
 
-            <!-- VIEW 2: REPARTIDOR PANEL -->
+            <!-- REPARTIDOR PANEL -->
             <div id="view-repartidor" class="role-view flex-1 flex flex-col p-4 md:p-6 overflow-y-auto space-y-5 hidden">
-                <!-- Driver Status Header -->
                 <div class="glass-panel p-5 rounded-2xl border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
                         <div class="w-14 h-14 rounded-2xl bg-pinkNeon/20 border border-pinkNeon/40 text-pinkNeon flex items-center justify-center text-2xl font-bold">
@@ -285,43 +219,26 @@
                         </div>
                     </div>
 
-                    <!-- Online Switch -->
                     <button id="driverStatusToggle" onclick="toggleDriverOnline()" class="px-4 py-2 rounded-xl bg-emeraldNeon/20 text-emeraldNeon border border-emeraldNeon/40 text-xs font-bold transition-all">
                         <i class="fa-solid fa-circle"></i> Disponible
                     </button>
                 </div>
 
-                <!-- Driver Earnings Card -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="glass-panel p-4 rounded-xl border-gray-800">
-                        <p class="text-[10px] text-gray-400 uppercase font-semibold">Ganancias Hoy</p>
-                        <p class="text-2xl font-black text-emeraldNeon mt-1">$48.50 USD</p>
-                    </div>
-                    <div class="glass-panel p-4 rounded-xl border-gray-800">
-                        <p class="text-[10px] text-gray-400 uppercase font-semibold">Carreras Completadas</p>
-                        <p class="text-2xl font-black text-white mt-1" id="driverCompletedCount">7</p>
-                    </div>
-                </div>
-
-                <!-- Available Delivery Jobs -->
                 <div>
                     <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-route text-pinkNeon"></i> Solicitudes Disponibles en la Red
                     </h3>
-                    <div id="driverJobsList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Dynamic Jobs -->
-                    </div>
+                    <div id="driverJobsList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                 </div>
             </div>
 
-            <!-- VIEW 3: ADMIN PANEL -->
+            <!-- ADMIN PANEL -->
             <div id="view-admin" class="role-view flex-1 flex flex-col p-4 md:p-6 overflow-y-auto space-y-5 hidden">
-                <!-- Admin Header -->
                 <div class="glass-panel p-5 rounded-2xl border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-l-4 border-l-purpleNeon">
                     <div>
                         <span class="text-[10px] font-bold text-purpleNeon uppercase tracking-widest"><i class="fa-solid fa-shield-halved"></i> Módulo Administrador</span>
-                        <h2 class="text-2xl font-bold text-white" id="adminProfileTitle">Panel General de Gestión</h2>
-                        <p class="text-xs text-gray-400">Administración global de Comercios, Repartidores y Red de Entregas</p>
+                        <h2 class="text-2xl font-bold text-white" id="adminProfileTitle">Panel General Cloud</h2>
+                        <p class="text-xs text-gray-400">Administración de Usuarios y Pedidos Sincronizados</p>
                     </div>
                     <div class="flex items-center gap-3">
                         <button onclick="openCreateUserModal('comercio')" class="bg-cyanNeon/20 border border-cyanNeon/50 text-cyanNeon hover:bg-cyanNeon/30 text-xs font-extrabold px-3.5 py-2 rounded-xl transition-all flex items-center gap-2">
@@ -333,7 +250,6 @@
                     </div>
                 </div>
 
-                <!-- Admin Metrics -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div class="glass-panel p-4 rounded-xl border-gray-800">
                         <p class="text-[10px] text-gray-400 uppercase font-semibold">Comercios Registrados</p>
@@ -349,9 +265,7 @@
                     </div>
                 </div>
 
-                <!-- Lists Grid -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Stores Management -->
                     <div class="glass-panel p-5 rounded-2xl border-gray-800 space-y-4">
                         <div class="flex items-center justify-between border-b border-gray-800 pb-3">
                             <h3 class="text-sm font-bold text-white flex items-center gap-2">
@@ -359,12 +273,9 @@
                             </h3>
                             <button onclick="openCreateUserModal('comercio')" class="text-xs text-cyanNeon hover:underline font-semibold">+ Agregar</button>
                         </div>
-                        <div id="adminStoresList" class="space-y-2 max-h-72 overflow-y-auto pr-1">
-                            <!-- Dynamic Stores -->
-                        </div>
+                        <div id="adminStoresList" class="space-y-2 max-h-72 overflow-y-auto pr-1"></div>
                     </div>
 
-                    <!-- Drivers Management -->
                     <div class="glass-panel p-5 rounded-2xl border-gray-800 space-y-4">
                         <div class="flex items-center justify-between border-b border-gray-800 pb-3">
                             <h3 class="text-sm font-bold text-white flex items-center gap-2">
@@ -372,9 +283,7 @@
                             </h3>
                             <button onclick="openCreateUserModal('repartidor')" class="text-xs text-pinkNeon hover:underline font-semibold">+ Agregar</button>
                         </div>
-                        <div id="adminDriversList" class="space-y-2 max-h-72 overflow-y-auto pr-1">
-                            <!-- Dynamic Drivers -->
-                        </div>
+                        <div id="adminDriversList" class="space-y-2 max-h-72 overflow-y-auto pr-1"></div>
                     </div>
                 </div>
             </div>
@@ -399,7 +308,7 @@
         </div>
     </div>
 
-    <!-- MODAL: ADMIN CREAR USUARIOS (COMERCIO / REPARTIDOR) -->
+    <!-- MODAL: ADMIN CREAR USUARIOS -->
     <div id="adminCreateUserModal" class="fixed inset-0 z-[999] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="glass-panel w-full max-w-md rounded-2xl border border-purpleNeon/40 p-6 space-y-5 shadow-2xl relative animate-in fade-in zoom-in duration-200">
             <div class="flex items-center justify-between border-b border-gray-800 pb-3">
@@ -451,7 +360,7 @@
         <div class="glass-panel w-full max-w-md rounded-2xl border border-cyanNeon/30 p-6 space-y-5 shadow-2xl relative animate-in fade-in zoom-in duration-200">
             <div class="flex items-center justify-between border-b border-gray-800 pb-3">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-paper-plane text-cyanNeon"></i> Publicar Nuevo Envió
+                    <i class="fa-solid fa-paper-plane text-cyanNeon"></i> Publicar Nuevo Envío
                 </h3>
                 <button onclick="closeNewOrderModal()" class="text-gray-400 hover:text-white text-sm">
                     <i class="fa-solid fa-xmark"></i>
@@ -484,36 +393,159 @@
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-gray-300 font-semibold mb-1">Prioridad de Entrega:</label>
-                    <select id="orderPriority" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-cyanNeon">
-                        <option value="Standard">Estándar (15-25 min)</option>
-                        <option value="Express">Express Turbo (menos de 15 min)</option>
-                    </select>
-                </div>
-
                 <div class="pt-2 flex justify-end gap-3">
                     <button type="button" onclick="closeNewOrderModal()" class="px-4 py-2 rounded-xl bg-gray-800 text-gray-300 font-semibold">Cancelar</button>
-                    <button type="submit" class="px-5 py-2 rounded-xl bg-gradient-primary text-darkBg font-extrabold shadow-glowCyan">Lanzar a la Red</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl bg-gradient-primary text-darkBg font-extrabold shadow-glowCyan">Lanzar a la Red Cloud</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- FOOTER ELEGANTE NEÓN -->
+    <!-- FOOTER -->
     <footer class="glass-panel border-t border-gray-800 px-4 py-2.5 z-40 shrink-0 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-gray-400">
         <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-cyanNeon inline-block"></span>
-            <span>Sistema Multiroles en Tiempo Real</span>
+            <span>Sistema Multi-Dispositivo en Nube Tiempo Real (Firebase)</span>
         </div>
         <div class="font-bold tracking-wider text-gray-300 bg-gray-900/90 px-3 py-1 rounded-full border border-gray-800">
             APLICACIÓN CREADA POR <span class="text-cyanNeon font-extrabold">ANDRÉS LEÓN</span>
         </div>
     </footer>
 
-    <!-- APPLICATION LOGIC JS -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global environment variables or fallback configuration
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'quickbox-default-app';
+        
+        let firebaseConfig = {
+            apiKey: "AIzaSyDemoKeyForPublicRealtimeDatabaseQuickBox",
+            authDomain: "quickbox-demo.firebaseapp.com",
+            projectId: "quickbox-demo",
+            storageBucket: "quickbox-demo.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef123456"
+        };
+
+        if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+            try {
+                firebaseConfig = JSON.parse(__firebase_config);
+            } catch(e) {
+                console.warn("Using fallback Firebase Config");
+            }
+        }
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Firestore collections path (Strict Rule 1)
+        const USERS_COLLECTION = collection(db, 'artifacts', appId, 'public', 'data', 'users');
+        const ORDERS_COLLECTION = collection(db, 'artifacts', appId, 'public', 'data', 'orders');
+
+        // Application Global States
+        let registeredUsers = [];
+        let orders = [];
+        let currentUser = null;
+        let isAuthReady = false;
+
+        // Authenticate User
+        async function authenticateUser() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                isAuthReady = true;
+                setupRealtimeListeners();
+            } catch (error) {
+                console.error("Firebase Auth Error:", error);
+            }
+        }
+
+        // Real-Time Listeners (Syncs all devices)
+        function setupRealtimeListeners() {
+            if (!isAuthReady) return;
+
+            // Sync Users Collection
+            onSnapshot(USERS_COLLECTION, (snapshot) => {
+                registeredUsers = [];
+                snapshot.forEach(docSnap => {
+                    registeredUsers.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                renderAdminPanel();
+            }, (error) => {
+                console.error("Error listening to users:", error);
+            });
+
+            // Sync Orders Collection
+            onSnapshot(ORDERS_COLLECTION, (snapshot) => {
+                orders = [];
+                snapshot.forEach(docSnap => {
+                    orders.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                renderAllViews();
+            }, (error) => {
+                console.error("Error listening to orders:", error);
+            });
+        }
+
+        // Expose functions globally for UI handlers
+        window.saveUserToCloud = async function(userObj) {
+            if (!isAuthReady) return;
+            try {
+                const userDoc = doc(db, 'artifacts', appId, 'public', 'data', 'users', userObj.id);
+                await setDoc(userDoc, userObj);
+            } catch (e) {
+                console.error("Error saving user:", e);
+            }
+        };
+
+        window.deleteUserFromCloud = async function(userId) {
+            if (!isAuthReady) return;
+            try {
+                const userDoc = doc(db, 'artifacts', appId, 'public', 'data', 'users', userId);
+                await deleteDoc(userDoc);
+            } catch (e) {
+                console.error("Error deleting user:", e);
+            }
+        };
+
+        window.createOrderInCloud = async function(orderObj) {
+            if (!isAuthReady) return;
+            try {
+                const orderDoc = doc(db, 'artifacts', appId, 'public', 'data', 'orders', orderObj.id);
+                await setDoc(orderDoc, orderObj);
+            } catch (e) {
+                console.error("Error creating order:", e);
+            }
+        };
+
+        window.updateOrderStatusInCloud = async function(orderId, updateData) {
+            if (!isAuthReady) return;
+            try {
+                const orderDoc = doc(db, 'artifacts', appId, 'public', 'data', 'orders', orderId);
+                await updateDoc(orderDoc, updateData);
+            } catch (e) {
+                console.error("Error updating order:", e);
+            }
+        };
+
+        // Initialize Authentication on Load
+        window.addEventListener('load', () => {
+            authenticateUser();
+        });
+
+        // Dynamic standard functions exposed to global scope
+        window.getRegisteredUsers = () => registeredUsers;
+        window.getOrders = () => orders;
+    </script>
+
     <script>
-        // GLOBAL STATE STORE
         let currentRole = 'comercio';
         let isDriverOnline = true;
         let isRegistering = false;
@@ -521,35 +553,10 @@
         let currentUser = null;
         let userToDeleteId = null;
 
-        // Persistent Registry Users Database
-        let registeredUsers = JSON.parse(localStorage.getItem('quickbox_all_users')) || [
-            { id: 'usr-1', role: 'comercio', name: 'Urban Burger Station', extra: 'Av. Central 452', email: 'urban@burger.com' },
-            { id: 'usr-2', role: 'comercio', name: 'Pizzeria Don Vito', extra: 'Av. Italia 890', email: 'donvito@pizza.com' },
-            { id: 'usr-3', role: 'repartidor', name: "Carlos 'Rider' Ruiz", extra: 'Moto Honda 150cc', email: 'carlos@rider.com' },
-            { id: 'usr-4', role: 'repartidor', name: "Sonia 'Express' Gomez", extra: 'Bicicleta MTB', email: 'sonia@rider.com' }
-        ];
-
-        // Sample Orders Array with LocalStorage Persistence
-        let orders = JSON.parse(localStorage.getItem('quickbox_orders')) || [
-            {
-                id: 'QB-101',
-                title: 'Mega Combo Doble Queso + Bebida',
-                store: 'Urban Burger Station',
-                address: 'Av. San Martín 1205',
-                price: 18.50,
-                fee: 3.50,
-                status: 'Esperando Repartidor', // States: Esperando Repartidor, En Camino, Entregado
-                rider: null
-            }
-        ];
-
-        // INITIALIZATION
         window.addEventListener('load', () => {
             checkAuthSession();
-            renderAllViews();
         });
 
-        // AUTHENTICATION LOGIC
         function checkAuthSession() {
             const savedUser = localStorage.getItem('quickbox_user');
             if (savedUser) {
@@ -582,9 +589,7 @@
                 activeBtn.classList.remove('text-gray-400');
             }
 
-            // Update form input labels based on role selection
             const extraDetailGroup = document.getElementById('extraDetailGroup');
-            const registerFields = document.getElementById('registerFields');
             const nameLabel = document.getElementById('nameLabel');
             const extraLabel = document.getElementById('extraLabel');
             const nameInput = document.getElementById('authName');
@@ -622,7 +627,7 @@
                 submitBtn.textContent = 'Crear Cuenta';
                 toggleText.textContent = '¿Ya tienes una cuenta?';
                 toggleBtn.textContent = 'Iniciar Sesión';
-                subtitle.textContent = 'Regístrate para comenzar en QUICK BOX';
+                subtitle.textContent = 'Regístrate para conectar con la Red Nube';
             } else {
                 regFields.classList.add('hidden');
                 submitBtn.textContent = 'Iniciar Sesión';
@@ -638,18 +643,11 @@
             const name = document.getElementById('authName').value || (authRole === 'admin' ? 'Administrador General' : (authRole === 'comercio' ? 'Urban Burger Station' : "Carlos 'Rider' Ruiz"));
             const extra = document.getElementById('authExtra').value || (authRole === 'comercio' ? 'Av. Central 452' : 'Moto Honda 150cc');
 
-            currentUser = {
-                email,
-                name,
-                extra,
-                role: authRole
-            };
+            currentUser = { email, name, extra, role: authRole };
 
-            // Register in system database if registering
             if (isRegistering && authRole !== 'admin') {
                 const newUser = { id: `usr-${Date.now()}`, role: authRole, name, extra, email };
-                registeredUsers.push(newUser);
-                localStorage.setItem('quickbox_all_users', JSON.stringify(registeredUsers));
+                if (window.saveUserToCloud) window.saveUserToCloud(newUser);
             }
 
             localStorage.setItem('quickbox_user', JSON.stringify(currentUser));
@@ -668,7 +666,6 @@
 
         function updateUserProfileUI() {
             if (!currentUser) return;
-
             const headerBadge = document.getElementById('userHeaderBadge');
             if (headerBadge) headerBadge.textContent = currentUser.name;
 
@@ -684,15 +681,12 @@
                 if (driverVeh) driverVeh.textContent = currentUser.extra;
             } else if (currentUser.role === 'admin') {
                 const adminTitle = document.getElementById('adminProfileTitle');
-                if (adminTitle) adminTitle.textContent = `Panel General - ${currentUser.name}`;
+                if (adminTitle) adminTitle.textContent = `Panel Cloud - ${currentUser.name}`;
             }
         }
 
-        // ROLE SWITCHING LOGIC
         function switchRole(role) {
             currentRole = role;
-
-            // Update UI buttons
             document.querySelectorAll('.role-btn').forEach(btn => {
                 btn.classList.remove('text-cyanNeon', 'bg-gray-800', 'shadow-md');
                 btn.classList.add('text-gray-400');
@@ -704,22 +698,22 @@
                 activeBtn.classList.remove('text-gray-400');
             }
 
-            // Toggle Panel Views
             document.querySelectorAll('.role-view').forEach(view => view.classList.add('hidden'));
             const targetView = document.getElementById(`view-${role}`);
             if (targetView) targetView.classList.remove('hidden');
 
             renderAllViews();
-            showToast(`Cambiaste al modo: ${role.toUpperCase()}`, 'info');
         }
 
-        // RENDER ADMIN PANEL USERS & STATS
         function renderAdminPanel() {
             const storesList = document.getElementById('adminStoresList');
             const driversList = document.getElementById('adminDriversList');
             const countStoresEl = document.getElementById('adminCountStores');
             const countDriversEl = document.getElementById('adminCountDrivers');
             const countOrdersEl = document.getElementById('adminCountOrders');
+
+            const registeredUsers = window.getRegisteredUsers ? window.getRegisteredUsers() : [];
+            const orders = window.getOrders ? window.getOrders() : [];
 
             const stores = registeredUsers.filter(u => u.role === 'comercio');
             const drivers = registeredUsers.filter(u => u.role === 'repartidor');
@@ -736,7 +730,7 @@
                             <p class="text-[11px] text-gray-400"><i class="fa-solid fa-location-dot"></i> ${s.extra} • ${s.email}</p>
                         </div>
                         <div class="flex items-center gap-2">
-                            <span class="px-2 py-0.5 rounded-full text-[10px] bg-emeraldNeon/10 border border-emeraldNeon/30 text-emeraldNeon font-bold">Activo</span>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] bg-emeraldNeon/10 border border-emeraldNeon/30 text-emeraldNeon font-bold">Activo Cloud</span>
                             <button onclick="promptDeleteUser('${s.id}')" title="Eliminar Comercio" class="p-1.5 rounded-lg bg-gray-800 text-gray-400 hover:text-pinkNeon hover:bg-pinkNeon/10 transition-colors">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
@@ -763,8 +757,8 @@
             }
         }
 
-        // DELETE USER LOGIC
         function promptDeleteUser(userId) {
+            const registeredUsers = window.getRegisteredUsers ? window.getRegisteredUsers() : [];
             const targetUser = registeredUsers.find(u => u.id === userId);
             if (!targetUser) return;
 
@@ -772,14 +766,11 @@
             const modal = document.getElementById('deleteConfirmModal');
             const titleEl = document.getElementById('deleteConfirmTitle');
             const msgEl = document.getElementById('deleteConfirmMessage');
-            const btn = document.getElementById('confirmDeleteBtn');
 
             if (titleEl) titleEl.textContent = `¿Eliminar ${targetUser.role === 'comercio' ? 'Comercio' : 'Repartidor'}?`;
-            if (msgEl) msgEl.textContent = `¿Estás seguro de eliminar a "${targetUser.name}"? Esta acción no se puede deshacer.`;
+            if (msgEl) msgEl.textContent = `¿Estás seguro de eliminar a "${targetUser.name}"? Se borrará de la nube para todos los dispositivos.`;
 
-            if (btn) {
-                btn.onclick = () => confirmDeleteUser();
-            }
+            document.getElementById('confirmDeleteBtn').onclick = () => confirmDeleteUser();
 
             if (modal) {
                 modal.classList.remove('hidden');
@@ -798,42 +789,29 @@
 
         function confirmDeleteUser() {
             if (!userToDeleteId) return;
-
-            const deletedUser = registeredUsers.find(u => u.id === userToDeleteId);
-            registeredUsers = registeredUsers.filter(u => u.id !== userToDeleteId);
-            localStorage.setItem('quickbox_all_users', JSON.stringify(registeredUsers));
-
-            renderAdminPanel();
-            closeDeleteModal();
-
-            if (deletedUser) {
-                showToast(`${deletedUser.role === 'comercio' ? 'Comercio' : 'Repartidor'} "${deletedUser.name}" eliminado`, 'info');
+            if (window.deleteUserFromCloud) {
+                window.deleteUserFromCloud(userToDeleteId);
             }
+            closeDeleteModal();
+            showToast('Usuario eliminado de la nube en tiempo real', 'info');
         }
 
-        // ADMIN CREATION MODAL HELPERS
         function openCreateUserModal(type) {
             const modal = document.getElementById('adminCreateUserModal');
             const title = document.getElementById('adminModalTitle');
             const typeInput = document.getElementById('adminUserType');
             const nameLabel = document.getElementById('adminNameLabel');
             const extraLabel = document.getElementById('adminExtraLabel');
-            const nameInput = document.getElementById('adminUserName');
-            const extraInput = document.getElementById('adminUserExtra');
 
             typeInput.value = type;
             if (type === 'comercio') {
-                title.innerHTML = `<i class="fa-solid fa-store text-cyanNeon"></i> Dar de Alta Nuevo Comercio`;
+                title.innerHTML = `<i class="fa-solid fa-store text-cyanNeon"></i> Dar de Alta Comercio Cloud`;
                 nameLabel.textContent = 'Nombre del Comercio';
                 extraLabel.textContent = 'Dirección del Local';
-                nameInput.placeholder = 'Ej. Pizzeria Bella Napoli';
-                extraInput.placeholder = 'Ej. Calle Mayor 123';
             } else {
-                title.innerHTML = `<i class="fa-solid fa-motorcycle text-pinkNeon"></i> Dar de Alta Nuevo Repartidor`;
+                title.innerHTML = `<i class="fa-solid fa-motorcycle text-pinkNeon"></i> Dar de Alta Repartidor Cloud`;
                 nameLabel.textContent = 'Nombre Completo del Repartidor';
                 extraLabel.textContent = 'Vehículo / Detalle';
-                nameInput.placeholder = "Ej. Mario 'Speed' Rossi";
-                extraInput.placeholder = 'Ej. Scooter Suzuki 125cc';
             }
 
             modal.classList.remove('hidden');
@@ -841,9 +819,8 @@
         }
 
         function closeAdminCreateUserModal() {
-            const modal = document.getElementById('adminCreateUserModal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+            document.getElementById('adminCreateUserModal').classList.add('hidden');
+            document.getElementById('adminCreateUserModal').classList.remove('flex');
         }
 
         function handleAdminCreateUser(e) {
@@ -854,24 +831,20 @@
             const email = document.getElementById('adminUserEmail').value;
 
             const newUser = { id: `usr-${Date.now()}`, role, name, extra, email };
-            registeredUsers.push(newUser);
-            localStorage.setItem('quickbox_all_users', JSON.stringify(registeredUsers));
+            if (window.saveUserToCloud) window.saveUserToCloud(newUser);
 
-            renderAdminPanel();
             closeAdminCreateUserModal();
             document.getElementById('adminCreateUserForm').reset();
-            showToast(`Nuevo ${role.toUpperCase()} registrado con éxito`, 'success');
+            showToast(`Nuevo ${role.toUpperCase()} guardado en Nube Cloud`, 'success');
         }
 
-        // RENDER ORDERS IN COMERCIO PANEL
         function renderOrders() {
             const list = document.getElementById('comercioOrdersList');
             const badge = document.getElementById('comercioOrdersBadge');
-            if (!list) return;
+            const orders = window.getOrders ? window.getOrders() : [];
 
-            if (badge) {
-                badge.textContent = `${orders.length} Activos`;
-            }
+            if (!list) return;
+            if (badge) badge.textContent = `${orders.length} Activos`;
 
             list.innerHTML = '';
 
@@ -893,9 +866,9 @@
                         ${order.rider ? `<p class="text-[11px] text-cyanNeon font-semibold"><i class="fa-solid fa-motorcycle"></i> Asignado a: ${order.rider}</p>` : ''}
                     </div>
                     <div class="flex items-center justify-between pt-3 border-t border-gray-800 text-xs">
-                        <span class="text-gray-400">Total: <strong class="text-white">$${order.price.toFixed(2)}</strong></span>
+                        <span class="text-gray-400">Total: <strong class="text-white">$${parseFloat(order.price).toFixed(2)}</strong></span>
                         <button onclick="shareWhatsApp('${order.id}', '${order.status}')" class="text-emeraldNeon hover:underline text-[11px] font-semibold flex items-center gap-1">
-                            <i class="fa-brands fa-whatsapp"></i> Notificar Cliente
+                            <i class="fa-brands fa-whatsapp"></i> Notificar
                         </button>
                     </div>
                 `;
@@ -903,45 +876,19 @@
             });
         }
 
-        // Helper render wrapper function
-        function renderStoreView() {
-            const storeCountEl = document.getElementById('storeDispatchCount');
-            if (storeCountEl) {
-                storeCountEl.textContent = orders.filter(o => o.status === 'Entregado').length + 18;
-            }
-            renderOrders();
-        }
-
-        // Helper function to update all views safely
-        function renderAllViews() {
-            renderStoreView();
-            renderDriverJobs();
-            renderAdminPanel();
-        }
-
-        // Save state helper function
-        function saveState() {
-            try {
-                localStorage.setItem('quickbox_orders', JSON.stringify(orders));
-            } catch(e) {
-                console.error("Local storage error", e);
-            }
-            renderAllViews();
-        }
-
-        // RENDER JOBS IN REPARTIDOR PANEL
         function renderDriverJobs() {
             const list = document.getElementById('driverJobsList');
+            const orders = window.getOrders ? window.getOrders() : [];
             if (!list) return;
-            list.innerHTML = '';
 
             const available = orders.filter(o => o.status === 'Esperando Repartidor');
 
             if(available.length === 0) {
-                list.innerHTML = `<div class="col-span-full text-xs text-gray-500 text-center py-8 glass-panel rounded-2xl border-gray-800">No hay solicitudes pendientes de asignación en la red.</div>`;
+                list.innerHTML = `<div class="col-span-full text-xs text-gray-500 text-center py-8 glass-panel rounded-2xl border-gray-800">No hay solicitudes pendientes en la red nube.</div>`;
                 return;
             }
 
+            list.innerHTML = '';
             available.forEach(job => {
                 const card = document.createElement('div');
                 card.className = 'glass-panel p-4 rounded-2xl border-cyanNeon/30 flex flex-col justify-between space-y-4';
@@ -952,7 +899,7 @@
                                 <span class="text-[10px] text-cyanNeon font-bold uppercase">${job.store}</span>
                                 <h4 class="text-sm font-bold text-white">${job.title}</h4>
                             </div>
-                            <span class="text-lg font-black text-emeraldNeon">+$${job.fee.toFixed(2)}</span>
+                            <span class="text-lg font-black text-emeraldNeon">+$${parseFloat(job.fee).toFixed(2)}</span>
                         </div>
                         <div class="text-xs text-gray-400 space-y-1">
                             <p><i class="fa-solid fa-store text-gray-500 w-4"></i> Retiro: ${job.store}</p>
@@ -960,48 +907,40 @@
                         </div>
                     </div>
                     <button onclick="acceptOrder('${job.id}')" class="w-full bg-gradient-primary text-darkBg font-extrabold py-2.5 rounded-xl text-xs shadow-glowCyan hover:scale-[1.02] transition-transform">
-                        Aceptar Carrera
+                        Aceptar Carrera en Nube
                     </button>
                 `;
                 list.appendChild(card);
             });
         }
 
-        // DRIVER ACCEPTS ORDER
         function acceptOrder(orderId) {
-            const order = orders.find(o => o.id === orderId);
-            if(!order) return;
-
-            order.status = 'En Camino';
-            order.rider = currentUser ? currentUser.name : "Carlos 'Rider' Ruiz";
-
-            saveState();
-
-            showToast(`¡Carrera aceptada! Dirígete a ${order.store}`, 'success');
-
-            // Simulate automatic completion after 8 seconds
-            setTimeout(() => {
-                completeOrder(orderId);
-            }, 8000);
-        }
-
-        // COMPLETE ORDER
-        function completeOrder(orderId) {
-            const order = orders.find(o => o.id === orderId);
-            if(order && order.status === 'En Camino') {
-                order.status = 'Entregado';
-                saveState();
-                showToast(`¡El pedido ${orderId} ha sido entregado con éxito!`, 'success');
+            const riderName = currentUser ? currentUser.name : "Carlos 'Rider' Ruiz";
+            if (window.updateOrderStatusInCloud) {
+                window.updateOrderStatusInCloud(orderId, {
+                    status: 'En Camino',
+                    rider: riderName
+                });
             }
+            showToast(`¡Carrera Aceptada! Sincronizado en todos los dispositivos`, 'success');
         }
 
-        // WHATSAPP INTEGRATION SIMULATION
+        function renderAllViews() {
+            const orders = window.getOrders ? window.getOrders() : [];
+            const storeCountEl = document.getElementById('storeDispatchCount');
+            if (storeCountEl) {
+                storeCountEl.textContent = orders.filter(o => o.status === 'Entregado').length;
+            }
+            renderOrders();
+            renderDriverJobs();
+            renderAdminPanel();
+        }
+
         function shareWhatsApp(orderId, status) {
-            const msg = encodeURIComponent(`Hola! Tu pedido ${orderId} en QUICK BOX está actualmente: *${status}*.`);
+            const msg = encodeURIComponent(`Hola! Tu pedido ${orderId} en QUICK BOX está en estado: *${status}*.`);
             window.open(`https://wa.me/?text=${msg}`, '_blank');
         }
 
-        // CREATE NEW ORDER MODAL & FORM
         function openNewOrderModal() {
             document.getElementById('newOrderModal').classList.remove('hidden');
             document.getElementById('newOrderModal').classList.add('flex');
@@ -1020,7 +959,6 @@
             const fee = parseFloat(document.getElementById('orderDeliveryFee').value);
 
             const newId = `QB-${Math.floor(100 + Math.random() * 900)}`;
-
             const storeName = currentUser && currentUser.role === 'comercio' ? currentUser.name : 'Urban Burger Station';
 
             const newOrder = {
@@ -1034,29 +972,28 @@
                 rider: null
             };
 
-            orders.unshift(newOrder);
-            saveState();
-            closeNewOrderModal();
+            if (window.createOrderInCloud) {
+                window.createOrderInCloud(newOrder);
+            }
 
-            showToast(`Pedido ${newId} lanzado a la red de repartidores`, 'success');
+            closeNewOrderModal();
+            showToast(`Pedido ${newId} enviado a la nube para todos los repartidores`, 'success');
         }
 
-        // DRIVER STATUS TOGGLE
         function toggleDriverOnline() {
             isDriverOnline = !isDriverOnline;
             const btn = document.getElementById('driverStatusToggle');
             if(isDriverOnline) {
                 btn.className = 'px-4 py-2 rounded-xl bg-emeraldNeon/20 text-emeraldNeon border border-emeraldNeon/40 text-xs font-bold transition-all';
                 btn.innerHTML = `<i class="fa-solid fa-circle"></i> Disponible`;
-                showToast('Estado actualizado: DISPONIBLE', 'info');
+                showToast('Estado: DISPONIBLE', 'info');
             } else {
                 btn.className = 'px-4 py-2 rounded-xl bg-gray-800 text-gray-400 border border-gray-700 text-xs font-bold transition-all';
                 btn.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Ocupado`;
-                showToast('Estado actualizado: OCUPADO', 'info');
+                showToast('Estado: OCUPADO', 'info');
             }
         }
 
-        // TOAST NOTIFICATION UTILITY
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
             if (!container) return;
@@ -1066,7 +1003,7 @@
             if(type === 'success') borderColor = 'border-emeraldNeon/40';
 
             toast.className = `glass-panel px-4 py-2.5 rounded-xl border ${borderColor} text-xs font-semibold text-white shadow-xl pointer-events-auto flex items-center gap-2 animate-in slide-in-from-right duration-200`;
-            toast.innerHTML = `<i class="fa-solid fa-bell text-cyanNeon"></i> ${message}`;
+            toast.innerHTML = `<i class="fa-solid fa-cloud text-cyanNeon"></i> ${message}`;
 
             container.appendChild(toast);
 
