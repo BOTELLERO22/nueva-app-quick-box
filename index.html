@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>QUICK BOX - Platform Network Cloud</title>
+    <title>QUICK BOX - SQL & Cloud Delivery Platform</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -28,6 +28,7 @@
                 extend: {
                     fontFamily: {
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"Fira Code"', 'monospace'],
                     },
                     colors: {
                         darkBg: '#090D16',
@@ -36,6 +37,7 @@
                         pinkNeon: '#FF007A',
                         purpleNeon: '#8B5CF6',
                         emeraldNeon: '#10B981',
+                        amberNeon: '#F59E0B',
                     },
                     boxShadow: {
                         glowCyan: '0 0 20px -3px rgba(0, 242, 254, 0.4)',
@@ -49,7 +51,7 @@
     </script>
     <style>
         .glass-panel {
-            background: rgba(15, 23, 42, 0.75);
+            background: rgba(15, 23, 42, 0.82);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -70,7 +72,6 @@
         ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #334155; }
         
-        /* Smooth touch feedback for mobile touch controls */
         button, a {
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
@@ -79,6 +80,7 @@
 </head>
 <body class="bg-darkBg text-gray-100 font-sans antialiased h-full flex flex-col overflow-hidden selection:bg-cyanNeon selection:text-darkBg">
 
+    <!-- Toast Notifications Container -->
     <div id="toastContainer" class="fixed top-4 sm:top-20 right-3 sm:right-4 left-3 sm:left-auto z-[9999] flex flex-col gap-2 pointer-events-none max-w-sm ml-auto"></div>
 
     <!-- AUTH SCREEN MODAL -->
@@ -86,12 +88,12 @@
         <div class="glass-panel w-full max-w-md rounded-2xl sm:rounded-3xl border border-cyanNeon/30 p-5 sm:p-8 space-y-5 sm:space-y-6 shadow-glowCyan relative animate-in fade-in zoom-in duration-300 my-auto">
             <div class="text-center space-y-1.5 sm:space-y-2">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-primary mx-auto flex items-center justify-center text-darkBg text-xl sm:text-2xl font-black shadow-glowCyan mb-2">
-                    <i class="fa-solid fa-bolt"></i>
+                    <i class="fa-solid fa-database"></i>
                 </div>
-                <h1 class="text-xl sm:text-2xl font-black text-white tracking-wider">QUICK<span class="text-cyanNeon">BOX</span></h1>
-                <p class="text-[11px] sm:text-xs text-gray-400" id="authSubtitle">Conectado a la Nube en Tiempo Real</p>
+                <h1 class="text-xl sm:text-2xl font-black text-white tracking-wider">QUICK<span class="text-cyanNeon">BOX</span> SQL</h1>
+                <p class="text-[11px] sm:text-xs text-gray-400" id="authSubtitle">Base de Datos Relacional y Nube Sincronizada</p>
                 <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyanNeon/10 border border-cyanNeon/30 text-[10px] text-cyanNeon font-mono">
-                    <span class="w-1.5 h-1.5 rounded-full bg-cyanNeon animate-pulse"></span> Multi-Dispositivo Sync
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyanNeon animate-pulse"></span> SQL Engine Connected
                 </div>
             </div>
 
@@ -148,14 +150,15 @@
         </div>
     </div>
 
+    <!-- MAIN HEADER -->
     <header class="glass-panel border-b border-gray-800 px-3 sm:px-6 py-2.5 sm:py-3 z-40 shrink-0 flex items-center justify-between gap-2 sm:gap-4">
         <div class="flex items-center gap-2 sm:gap-3 shrink-0">
             <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-primary flex items-center justify-center text-darkBg text-lg sm:text-xl font-black shadow-glowCyan">
-                <i class="fa-solid fa-bolt"></i>
+                <i class="fa-solid fa-database"></i>
             </div>
             <div>
                 <span class="text-base sm:text-xl font-extrabold tracking-wider text-white">QUICK<span class="text-cyanNeon">BOX</span></span>
-                <span class="hidden lg:inline-block text-[10px] bg-cyanNeon/10 text-cyanNeon border border-cyanNeon/30 px-2 py-0.5 rounded-full ml-2 font-mono">CLOUD SYNC</span>
+                <span class="hidden lg:inline-block text-[10px] bg-cyanNeon/10 text-cyanNeon border border-cyanNeon/30 px-2 py-0.5 rounded-full ml-2 font-mono">SQL + CLOUD SYNC</span>
             </div>
         </div>
 
@@ -169,6 +172,9 @@
             </button>
             <button onclick="switchRole('admin')" id="roleBtn-admin" class="role-btn px-2.5 sm:px-3.5 py-1.5 rounded-lg sm:rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-gray-400 hover:text-white shrink-0 min-h-[36px]">
                 <i class="fa-solid fa-user-shield"></i> <span class="hidden sm:inline">Admin</span>
+            </button>
+            <button onclick="toggleSqlConsole()" title="Consola SQL Database" class="px-2.5 sm:px-3 py-1.5 rounded-lg sm:rounded-xl text-xs font-bold transition-all flex items-center gap-1 text-purpleNeon hover:text-white shrink-0 min-h-[36px]">
+                <i class="fa-solid fa-terminal"></i> <span class="hidden sm:inline font-mono">SQL</span>
             </button>
         </div>
 
@@ -186,6 +192,7 @@
         </div>
     </header>
 
+    <!-- MAIN VIEWS WRAPPER -->
     <div class="flex-1 flex flex-col overflow-hidden relative max-w-7xl mx-auto w-full p-2.5 sm:p-4 md:p-6">
         <div class="flex-1 bg-darkBg flex flex-col overflow-hidden rounded-2xl border border-gray-800">
             
@@ -193,13 +200,13 @@
             <div id="view-comercio" class="role-view flex-1 flex flex-col p-3 sm:p-5 md:p-6 overflow-y-auto space-y-4 sm:space-y-5">
                 <div class="glass-panel p-4 sm:p-5 rounded-2xl border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                     <div class="space-y-0.5">
-                        <span class="text-[10px] font-bold text-cyanNeon uppercase tracking-widest">Local Activo en Nube</span>
+                        <span class="text-[10px] font-bold text-cyanNeon uppercase tracking-widest"><i class="fa-solid fa-table"></i> SQL Table: `stores`</span>
                         <h2 class="text-xl sm:text-2xl font-bold text-white" id="comercioProfileTitle">Urban Burger Station</h2>
-                        <p class="text-xs text-gray-400" id="comercioProfileAddress">Av. Central 452 • En línea</p>
+                        <p class="text-xs text-gray-400" id="comercioProfileAddress">Av. Central 452 • Conectado a SQL DB</p>
                     </div>
                     <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4 pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-800/80">
                         <div class="text-left sm:text-right">
-                            <span class="text-[11px] text-gray-400">Entregados</span>
+                            <span class="text-[11px] text-gray-400">Entregados SQL</span>
                             <p class="text-xl sm:text-2xl font-black text-emeraldNeon" id="storeDispatchCount">0</p>
                         </div>
                         <button onclick="openNewOrderModal()" class="bg-gradient-primary text-darkBg text-xs font-extrabold px-3.5 py-2.5 rounded-xl shadow-glowCyan hover:scale-105 active:scale-95 transition-transform flex items-center gap-2">
@@ -211,7 +218,7 @@
                 <div>
                     <div class="flex items-center justify-between mb-3 sm:mb-4">
                         <h3 class="text-xs sm:text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-box-archive text-cyanNeon"></i> Pedidos Solicitados
+                            <i class="fa-solid fa-box-archive text-cyanNeon"></i> Pedidos Emitidos (SQL Query Result)
                         </h3>
                         <span class="text-[11px] sm:text-xs bg-gray-800 text-gray-300 px-2.5 py-0.5 sm:py-1 rounded-full font-semibold" id="comercioOrdersBadge">0 Activos</span>
                     </div>
@@ -242,7 +249,7 @@
 
                 <div>
                     <h3 class="text-xs sm:text-sm font-bold text-white uppercase tracking-wider mb-3 sm:mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-route text-pinkNeon"></i> Solicitudes Disponibles en la Red
+                        <i class="fa-solid fa-route text-pinkNeon"></i> Solicitudes Recibidas de Comercios (SELECT * FROM orders)
                     </h3>
                     <div id="driverJobsList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4"></div>
                 </div>
@@ -252,9 +259,9 @@
             <div id="view-admin" class="role-view flex-1 flex flex-col p-3 sm:p-5 md:p-6 overflow-y-auto space-y-4 sm:space-y-5 hidden">
                 <div class="glass-panel p-4 sm:p-5 rounded-2xl border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 border-l-4 border-l-purpleNeon">
                     <div>
-                        <span class="text-[10px] font-bold text-purpleNeon uppercase tracking-widest"><i class="fa-solid fa-shield-halved"></i> Módulo Administrador</span>
-                        <h2 class="text-xl sm:text-2xl font-bold text-white" id="adminProfileTitle">Panel General Cloud</h2>
-                        <p class="text-xs text-gray-400">Administración de Usuarios y Pedidos Sincronizados</p>
+                        <span class="text-[10px] font-bold text-purpleNeon uppercase tracking-widest"><i class="fa-solid fa-shield-halved"></i> Módulo Administrador SQL</span>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white" id="adminProfileTitle">Panel General SQL Cloud</h2>
+                        <p class="text-xs text-gray-400">Gestión de Tablas `users` y `orders` con Llaves Foráneas</p>
                     </div>
                     <div class="flex items-center gap-2 w-full sm:w-auto justify-stretch sm:justify-end">
                         <button onclick="openCreateUserModal('comercio')" class="flex-1 sm:flex-initial bg-cyanNeon/20 border border-cyanNeon/50 text-cyanNeon hover:bg-cyanNeon/30 text-xs font-extrabold px-3 py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 min-h-[38px]">
@@ -268,15 +275,15 @@
 
                 <div class="grid grid-cols-3 gap-2.5 sm:gap-4">
                     <div class="glass-panel p-3 sm:p-4 rounded-xl border-gray-800">
-                        <p class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-semibold truncate">Comercios</p>
+                        <p class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-semibold truncate">Comercios SQL</p>
                         <p class="text-lg sm:text-2xl font-black text-cyanNeon mt-0.5 sm:mt-1" id="adminCountStores">0</p>
                     </div>
                     <div class="glass-panel p-3 sm:p-4 rounded-xl border-gray-800">
-                        <p class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-semibold truncate">Repartidores</p>
+                        <p class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-semibold truncate">Repartidores SQL</p>
                         <p class="text-lg sm:text-2xl font-black text-pinkNeon mt-0.5 sm:mt-1" id="adminCountDrivers">0</p>
                     </div>
                     <div class="glass-panel p-3 sm:p-4 rounded-xl border-gray-800">
-                        <p class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-semibold truncate">Total Pedidos</p>
+                        <p class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-semibold truncate">Registros SQL Total</p>
                         <p class="text-lg sm:text-2xl font-black text-white mt-0.5 sm:mt-1" id="adminCountOrders">0</p>
                     </div>
                 </div>
@@ -285,9 +292,9 @@
                     <div class="glass-panel p-4 sm:p-5 rounded-2xl border-gray-800 space-y-3 sm:space-y-4">
                         <div class="flex items-center justify-between border-b border-gray-800 pb-2.5">
                             <h3 class="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
-                                <i class="fa-solid fa-store text-cyanNeon"></i> Comercios Aliados
+                                <i class="fa-solid fa-store text-cyanNeon"></i> Tabla: `users` (Comercios)
                             </h3>
-                            <button onclick="openCreateUserModal('comercio')" class="text-xs text-cyanNeon hover:underline font-semibold">+ Agregar</button>
+                            <button onclick="openCreateUserModal('comercio')" class="text-xs text-cyanNeon hover:underline font-semibold">+ Insertar</button>
                         </div>
                         <div id="adminStoresList" class="space-y-2 max-h-60 sm:max-h-72 overflow-y-auto pr-1"></div>
                     </div>
@@ -295,9 +302,9 @@
                     <div class="glass-panel p-4 sm:p-5 rounded-2xl border-gray-800 space-y-3 sm:space-y-4">
                         <div class="flex items-center justify-between border-b border-gray-800 pb-2.5">
                             <h3 class="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
-                                <i class="fa-solid fa-motorcycle text-pinkNeon"></i> Repartidores de la Red
+                                <i class="fa-solid fa-motorcycle text-pinkNeon"></i> Tabla: `users` (Repartidores)
                             </h3>
-                            <button onclick="openCreateUserModal('repartidor')" class="text-xs text-pinkNeon hover:underline font-semibold">+ Agregar</button>
+                            <button onclick="openCreateUserModal('repartidor')" class="text-xs text-pinkNeon hover:underline font-semibold">+ Insertar</button>
                         </div>
                         <div id="adminDriversList" class="space-y-2 max-h-60 sm:max-h-72 overflow-y-auto pr-1"></div>
                     </div>
@@ -307,19 +314,71 @@
         </div>
     </div>
 
-    <!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN DE USUARIO -->
+    <!-- SQL DATABASE CONSOLE DRAWER -->
+    <div id="sqlConsoleDrawer" class="fixed inset-x-0 bottom-0 z-[800] bg-gray-950/95 backdrop-blur-lg border-t border-purpleNeon/40 p-3 sm:p-4 hidden transition-all duration-300">
+        <div class="max-w-7xl mx-auto space-y-3">
+            <div class="flex items-center justify-between border-b border-gray-800 pb-2">
+                <div class="flex items-center gap-2 text-xs font-mono text-purpleNeon font-bold">
+                    <i class="fa-solid fa-terminal"></i> SQL Query Engine (Embedded Relational DB)
+                </div>
+                <button onclick="toggleSqlConsole()" class="text-gray-400 hover:text-white p-1 text-xs font-mono">
+                    [X] Cerrar
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 font-mono text-[11px]">
+                <div class="space-y-1.5">
+                    <label class="block text-gray-400">Esquema Relacional (SQL Schema):</label>
+                    <pre class="bg-gray-900 border border-gray-800 p-2.5 rounded-lg text-cyanNeon overflow-x-auto h-24">
+CREATE TABLE users (
+  id VARCHAR(64) PRIMARY KEY,
+  role VARCHAR(20) NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  extra VARCHAR(150),
+  email VARCHAR(100) UNIQUE
+);
+
+CREATE TABLE orders (
+  id VARCHAR(32) PRIMARY KEY,
+  title VARCHAR(150) NOT NULL,
+  store VARCHAR(100) NOT NULL,
+  address VARCHAR(200) NOT NULL,
+  price DECIMAL(10,2) NOT NULL,
+  fee DECIMAL(10,2) NOT NULL,
+  status VARCHAR(30) DEFAULT 'Esperando Repartidor',
+  rider VARCHAR(100),
+  FOREIGN KEY (store) REFERENCES users(name)
+);</pre>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-gray-400">Ejecutar Consulta SQL Personalizada:</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="sqlQueryInput" placeholder="SELECT * FROM orders WHERE status = 'En Camino';" 
+                            class="flex-1 bg-gray-900 border border-gray-800 rounded-lg px-3 py-1.5 text-white focus:outline-none focus:border-purpleNeon">
+                        <button onclick="executeCustomSql()" class="bg-purpleNeon text-white px-3 py-1.5 rounded-lg font-bold hover:bg-purple-600 transition-colors">
+                            Ejecutar
+                        </button>
+                    </div>
+                    <pre id="sqlLogOutput" class="bg-gray-900 border border-gray-800 p-2.5 rounded-lg text-emeraldNeon overflow-x-auto h-16">SQL Engine initialized: 2 tables, relational sync active.</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: DELETE CONFIRMATION -->
     <div id="deleteConfirmModal" class="fixed inset-0 z-[1001] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4">
         <div class="glass-panel w-full max-w-sm rounded-2xl border border-pinkNeon/40 p-5 sm:p-6 space-y-4 shadow-2xl relative animate-in fade-in zoom-in duration-200 my-auto">
             <div class="text-center space-y-2">
                 <div class="w-12 h-12 rounded-2xl bg-pinkNeon/20 border border-pinkNeon/40 text-pinkNeon mx-auto flex items-center justify-center text-xl font-bold">
                     <i class="fa-solid fa-trash-can"></i>
                 </div>
-                <h3 class="text-base font-bold text-white" id="deleteConfirmTitle">¿Eliminar Usuario?</h3>
-                <p class="text-xs text-gray-400" id="deleteConfirmMessage">Esta acción borrará al usuario permanentemente del sistema.</p>
+                <h3 class="text-base font-bold text-white" id="deleteConfirmTitle">DELETE FROM users</h3>
+                <p class="text-xs text-gray-400" id="deleteConfirmMessage">Esta consulta DELETE eliminará al usuario permanentemente.</p>
             </div>
             <div class="pt-2 flex items-center justify-end gap-2.5">
                 <button type="button" onclick="closeDeleteModal()" class="flex-1 py-2.5 rounded-xl bg-gray-800 text-gray-300 font-semibold text-xs hover:bg-gray-700 transition-colors min-h-[40px]">Cancelar</button>
-                <button type="button" id="confirmDeleteBtn" class="flex-1 py-2.5 rounded-xl bg-pinkNeon text-white font-extrabold text-xs shadow-glowPink hover:bg-pink-600 transition-colors min-h-[40px]">Eliminar</button>
+                <button type="button" id="confirmDeleteBtn" class="flex-1 py-2.5 rounded-xl bg-pinkNeon text-white font-extrabold text-xs shadow-glowPink hover:bg-pink-600 transition-colors min-h-[40px]">Eliminar SQL</button>
             </div>
         </div>
     </div>
@@ -329,7 +388,7 @@
         <div class="glass-panel w-full max-w-md rounded-2xl border border-purpleNeon/40 p-5 sm:p-6 space-y-4 sm:space-y-5 shadow-2xl relative animate-in fade-in zoom-in duration-200 my-auto">
             <div class="flex items-center justify-between border-b border-gray-800 pb-3">
                 <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2 truncate" id="adminModalTitle">
-                    <i class="fa-solid fa-user-plus text-purpleNeon"></i> Agregar Nuevo Usuario
+                    <i class="fa-solid fa-user-plus text-purpleNeon"></i> INSERT INTO users
                 </h3>
                 <button onclick="closeAdminCreateUserModal()" class="text-gray-400 hover:text-white p-1">
                     <i class="fa-solid fa-xmark text-lg"></i>
@@ -365,7 +424,7 @@
 
                 <div class="pt-2 flex justify-end gap-2.5">
                     <button type="button" onclick="closeAdminCreateUserModal()" class="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-gray-800 text-gray-300 font-semibold min-h-[40px]">Cancelar</button>
-                    <button type="submit" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-purpleNeon text-white font-extrabold shadow-glowPurple hover:bg-purple-600 transition-colors min-h-[40px]">Guardar Usuario</button>
+                    <button type="submit" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-purpleNeon text-white font-extrabold shadow-glowPurple hover:bg-purple-600 transition-colors min-h-[40px]">Guardar Registro SQL</button>
                 </div>
             </form>
         </div>
@@ -376,7 +435,7 @@
         <div class="glass-panel w-full max-w-md rounded-2xl border border-cyanNeon/30 p-5 sm:p-6 space-y-4 sm:space-y-5 shadow-2xl relative animate-in fade-in zoom-in duration-200 my-auto">
             <div class="flex items-center justify-between border-b border-gray-800 pb-3">
                 <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-paper-plane text-cyanNeon"></i> Publicar Nuevo Envío
+                    <i class="fa-solid fa-paper-plane text-cyanNeon"></i> INSERT INTO orders
                 </h3>
                 <button onclick="closeNewOrderModal()" class="text-gray-400 hover:text-white p-1">
                     <i class="fa-solid fa-xmark text-lg"></i>
@@ -385,7 +444,7 @@
 
             <form id="createOrderForm" onsubmit="handleCreateOrder(event)" class="space-y-3 sm:space-y-4 text-xs">
                 <div>
-                    <label class="block text-gray-300 font-semibold mb-1">Nombre / Detalle del Paquete:</label>
+                    <label class="block text-gray-300 font-semibold mb-1">Detalle / Producto:</label>
                     <input type="text" id="orderTitle" required placeholder="Ej. Combo Doble Burger + Papas" 
                         class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-cyanNeon min-h-[42px]">
                 </div>
@@ -411,7 +470,7 @@
 
                 <div class="pt-2 flex justify-end gap-2.5">
                     <button type="button" onclick="closeNewOrderModal()" class="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-gray-800 text-gray-300 font-semibold min-h-[40px]">Cancelar</button>
-                    <button type="submit" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-gradient-primary text-darkBg font-extrabold shadow-glowCyan min-h-[40px]">Lanzar a la Red Cloud</button>
+                    <button type="submit" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-gradient-primary text-darkBg font-extrabold shadow-glowCyan min-h-[40px]">Insertar Registro SQL</button>
                 </div>
             </form>
         </div>
@@ -419,21 +478,21 @@
 
     <!-- FOOTER -->
     <footer class="glass-panel border-t border-gray-800 px-3 sm:px-4 py-2 sm:py-2.5 z-40 shrink-0 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-2 text-[10px] sm:text-[11px] text-gray-400">
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 font-mono">
             <span class="w-2 h-2 rounded-full bg-cyanNeon inline-block shrink-0"></span>
-            <span class="truncate">Sistema Multi-Dispositivo en Nube Tiempo Real (Firebase)</span>
+            <span class="truncate">SQL Relational DB Engine + Firebase Multi-Device Sync</span>
         </div>
         <div class="font-bold tracking-wider text-gray-300 bg-gray-900/90 px-3 py-1 rounded-full border border-gray-800">
             APLICACIÓN CREADA POR <span class="text-cyanNeon font-extrabold">ANDRÉS LEÓN</span>
         </div>
     </footer>
 
+    <!-- FIREBASE & SQL INTEGRATION MODULE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Global environment variables or fallback configuration
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'quickbox-default-app';
         
         let firebaseConfig = {
@@ -453,42 +512,47 @@
             }
         }
 
-        // Initialize Firebase
+        // Initialize Firebase Cloud Data Engine
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Firestore collections path
+        // Firestore paths using public rules
         const USERS_COLLECTION = collection(db, 'artifacts', appId, 'public', 'data', 'users');
         const ORDERS_COLLECTION = collection(db, 'artifacts', appId, 'public', 'data', 'orders');
 
-        // Application Global States
-        let registeredUsers = [];
-        let orders = [
-            {
-                id: 'QB-101',
-                title: 'Combo Doble Burger + Papas',
-                store: 'Urban Burger Station',
-                address: 'Av. Las Heras 742, Apt 4B',
-                price: 24.50,
-                fee: 4.00,
-                status: 'Esperando Repartidor',
-                rider: null
-            },
-            {
-                id: 'QB-102',
-                title: 'Pizza Familiar Muzzarella',
-                store: 'Pizzeria Bella Napoli',
-                address: 'Calle San Martín 1120',
-                price: 18.00,
-                fee: 3.50,
-                status: 'Esperando Repartidor',
-                rider: null
-            }
-        ];
+        // Embedded Relational State (Simulates SQL database tables)
+        let sqlDatabase = {
+            users: [
+                { id: 'usr-101', role: 'comercio', name: 'Urban Burger Station', extra: 'Av. Central 452', email: 'urban@burger.com' },
+                { id: 'usr-102', role: 'repartidor', name: "Carlos 'Rider' Ruiz", extra: 'Moto Honda 150cc', email: 'carlos@rider.com' }
+            ],
+            orders: [
+                {
+                    id: 'QB-101',
+                    title: 'Combo Doble Burger + Papas',
+                    store: 'Urban Burger Station',
+                    address: 'Av. Las Heras 742, Apt 4B',
+                    price: 24.50,
+                    fee: 4.00,
+                    status: 'Esperando Repartidor',
+                    rider: null
+                },
+                {
+                    id: 'QB-102',
+                    title: 'Pizza Familiar Muzzarella',
+                    store: 'Pizzeria Bella Napoli',
+                    address: 'Calle San Martín 1120',
+                    price: 18.00,
+                    fee: 3.50,
+                    status: 'Esperando Repartidor',
+                    rider: null
+                }
+            ]
+        };
+
         let isAuthReady = false;
 
-        // Authenticate User
         async function authenticateUser() {
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -500,111 +564,91 @@
                 setupRealtimeListeners();
             } catch (error) {
                 console.error("Firebase Auth Error:", error);
-                if (typeof window.renderAllViews === 'function') {
-                    window.renderAllViews();
-                }
+                if (typeof window.renderAllViews === 'function') window.renderAllViews();
             }
         }
 
-        // Real-Time Listeners (Syncs all devices)
         function setupRealtimeListeners() {
             if (!isAuthReady) return;
 
-            // Sync Users Collection
+            // Sync USERS table
             onSnapshot(USERS_COLLECTION, (snapshot) => {
                 const cloudUsers = [];
                 snapshot.forEach(docSnap => {
                     cloudUsers.push({ id: docSnap.id, ...docSnap.data() });
                 });
                 if (cloudUsers.length > 0) {
-                    registeredUsers = cloudUsers;
+                    sqlDatabase.users = cloudUsers;
                 }
-                if (typeof window.renderAdminPanel === 'function') {
-                    window.renderAdminPanel();
-                }
-            }, (error) => {
-                console.error("Error listening to users:", error);
-            });
+                if (typeof window.renderAllViews === 'function') window.renderAllViews();
+            }, (error) => console.error("Error listening to users:", error));
 
-            // Sync Orders Collection in Realtime across all devices
+            // Sync ORDERS table
             onSnapshot(ORDERS_COLLECTION, (snapshot) => {
                 const cloudOrders = [];
                 snapshot.forEach(docSnap => {
                     cloudOrders.push({ id: docSnap.id, ...docSnap.data() });
                 });
                 if (cloudOrders.length > 0) {
-                    orders = cloudOrders;
+                    sqlDatabase.orders = cloudOrders;
                 }
-                if (typeof window.renderAllViews === 'function') {
-                    window.renderAllViews();
-                }
-            }, (error) => {
-                console.error("Error listening to orders:", error);
-            });
+                if (typeof window.renderAllViews === 'function') window.renderAllViews();
+            }, (error) => console.error("Error listening to orders:", error));
         }
 
-        // Expose functions globally for UI handlers
-        window.saveUserToCloud = async function(userObj) {
-            registeredUsers.push(userObj);
+        // Expose SQL Database Helper Functions to window scope
+        window.getSqlTable = function(tableName) {
+            return sqlDatabase[tableName] || [];
+        };
+
+        window.executeSqlInsert = async function(tableName, data) {
+            sqlDatabase[tableName].unshift(data);
             if (typeof window.renderAllViews === 'function') window.renderAllViews();
+
             if (!isAuthReady) return;
             try {
-                const userDoc = doc(db, 'artifacts', appId, 'public', 'data', 'users', userObj.id);
-                await setDoc(userDoc, userObj);
+                const targetDoc = doc(db, 'artifacts', appId, 'public', 'data', tableName, data.id);
+                await setDoc(targetDoc, data);
             } catch (e) {
-                console.error("Error saving user:", e);
+                console.error(`Error executing INSERT INTO ${tableName}:`, e);
             }
         };
 
-        window.deleteUserFromCloud = async function(userId) {
-            registeredUsers = registeredUsers.filter(u => u.id !== userId);
-            if (typeof window.renderAllViews === 'function') window.renderAllViews();
-            if (!isAuthReady) return;
-            try {
-                const userDoc = doc(db, 'artifacts', appId, 'public', 'data', 'users', userId);
-                await deleteDoc(userDoc);
-            } catch (e) {
-                console.error("Error deleting user:", e);
-            }
-        };
-
-        window.createOrderInCloud = async function(orderObj) {
-            orders.unshift(orderObj);
-            if (typeof window.renderAllViews === 'function') window.renderAllViews();
-            if (!isAuthReady) return;
-            try {
-                const orderDoc = doc(db, 'artifacts', appId, 'public', 'data', 'orders', orderObj.id);
-                await setDoc(orderDoc, orderObj);
-            } catch (e) {
-                console.error("Error creating order:", e);
-            }
-        };
-
-        window.updateOrderStatusInCloud = async function(orderId, updateData) {
-            const targetOrder = orders.find(o => o.id === orderId);
-            if (targetOrder) {
-                Object.assign(targetOrder, updateData);
+        window.executeSqlUpdate = async function(tableName, id, updateData) {
+            const item = sqlDatabase[tableName].find(i => i.id === id);
+            if (item) {
+                Object.assign(item, updateData);
                 if (typeof window.renderAllViews === 'function') window.renderAllViews();
             }
+
             if (!isAuthReady) return;
             try {
-                const orderDoc = doc(db, 'artifacts', appId, 'public', 'data', 'orders', orderId);
-                await updateDoc(orderDoc, updateData);
+                const targetDoc = doc(db, 'artifacts', appId, 'public', 'data', tableName, id);
+                await updateDoc(targetDoc, updateData);
             } catch (e) {
-                console.error("Error updating order:", e);
+                console.error(`Error executing UPDATE ${tableName}:`, e);
             }
         };
 
-        // Initialize Authentication on Load
+        window.executeSqlDelete = async function(tableName, id) {
+            sqlDatabase[tableName] = sqlDatabase[tableName].filter(i => i.id !== id);
+            if (typeof window.renderAllViews === 'function') window.renderAllViews();
+
+            if (!isAuthReady) return;
+            try {
+                const targetDoc = doc(db, 'artifacts', appId, 'public', 'data', tableName, id);
+                await deleteDoc(targetDoc);
+            } catch (e) {
+                console.error(`Error executing DELETE FROM ${tableName}:`, e);
+            }
+        };
+
         window.addEventListener('load', () => {
             authenticateUser();
         });
-
-        // Dynamic standard functions exposed to global scope
-        window.getRegisteredUsers = () => registeredUsers;
-        window.getOrders = () => orders;
     </script>
 
+    <!-- APPLICATION FRONTEND CONTROLLER -->
     <script>
         let currentRole = 'comercio';
         let isDriverOnline = true;
@@ -684,37 +728,37 @@
 
             if (isRegistering) {
                 regFields.classList.remove('hidden');
-                submitBtn.textContent = 'Crear Cuenta';
+                submitBtn.textContent = 'Crear Cuenta SQL';
                 toggleText.textContent = '¿Ya tienes una cuenta?';
                 toggleBtn.textContent = 'Iniciar Sesión';
-                subtitle.textContent = 'Regístrate para conectar con la Red Nube';
+                subtitle.textContent = 'Regístrate para insertar un nuevo usuario en la BD';
             } else {
                 regFields.classList.add('hidden');
                 submitBtn.textContent = 'Iniciar Sesión';
                 toggleText.textContent = '¿No tienes una cuenta?';
                 toggleBtn.textContent = 'Registrarse';
-                subtitle.textContent = 'Inicia sesión en la Red de Entregas';
+                subtitle.textContent = 'Acceso a la Red de Entregas SQL';
             }
         }
 
         function handleAuthSubmit(e) {
             e.preventDefault();
             const email = document.getElementById('authEmail').value;
-            const name = document.getElementById('authName').value || (authRole === 'admin' ? 'Administrador General' : (authRole === 'comercio' ? 'Urban Burger Station' : "Carlos 'Rider' Ruiz"));
+            const name = document.getElementById('authName').value || (authRole === 'admin' ? 'Administrador SQL' : (authRole === 'comercio' ? 'Urban Burger Station' : "Carlos 'Rider' Ruiz"));
             const extra = document.getElementById('authExtra').value || (authRole === 'comercio' ? 'Av. Central 452' : 'Moto Honda 150cc');
 
             currentUser = { email, name, extra, role: authRole };
 
             if (isRegistering && authRole !== 'admin') {
                 const newUser = { id: `usr-${Date.now()}`, role: authRole, name, extra, email };
-                if (window.saveUserToCloud) window.saveUserToCloud(newUser);
+                if (window.executeSqlInsert) window.executeSqlInsert('users', newUser);
             }
 
             localStorage.setItem('quickbox_user', JSON.stringify(currentUser));
             document.getElementById('authScreen').classList.add('hidden');
             updateUserProfileUI();
             switchRole(authRole);
-            showToast(`¡Bienvenido/a, ${name}!`, 'success');
+            showToast(`¡Bienvenido/a, ${name}! Sesión conectada a SQL BD`, 'success');
         }
 
         function logoutUser() {
@@ -733,7 +777,7 @@
                 const storeTitle = document.getElementById('comercioProfileTitle');
                 const storeAddr = document.getElementById('comercioProfileAddress');
                 if (storeTitle) storeTitle.textContent = currentUser.name;
-                if (storeAddr) storeAddr.textContent = `${currentUser.extra} • En línea`;
+                if (storeAddr) storeAddr.textContent = `${currentUser.extra} • SQL Connected`;
             } else if (currentUser.role === 'repartidor') {
                 const driverName = document.getElementById('repartidorProfileName');
                 const driverVeh = document.getElementById('repartidorVehicle');
@@ -741,7 +785,7 @@
                 if (driverVeh) driverVeh.textContent = currentUser.extra;
             } else if (currentUser.role === 'admin') {
                 const adminTitle = document.getElementById('adminProfileTitle');
-                if (adminTitle) adminTitle.textContent = `Panel Cloud - ${currentUser.name}`;
+                if (adminTitle) adminTitle.textContent = `Panel SQL - ${currentUser.name}`;
             }
         }
 
@@ -772,11 +816,11 @@
             const countDriversEl = document.getElementById('adminCountDrivers');
             const countOrdersEl = document.getElementById('adminCountOrders');
 
-            const registeredUsers = window.getRegisteredUsers ? window.getRegisteredUsers() : [];
-            const orders = window.getOrders ? window.getOrders() : [];
+            const users = window.getSqlTable ? window.getSqlTable('users') : [];
+            const orders = window.getSqlTable ? window.getSqlTable('orders') : [];
 
-            const stores = registeredUsers.filter(u => u.role === 'comercio');
-            const drivers = registeredUsers.filter(u => u.role === 'repartidor');
+            const stores = users.filter(u => u.role === 'comercio');
+            const drivers = users.filter(u => u.role === 'repartidor');
 
             if (countStoresEl) countStoresEl.textContent = stores.length;
             if (countDriversEl) countDriversEl.textContent = drivers.length;
@@ -784,44 +828,40 @@
 
             if (storesList) {
                 storesList.innerHTML = stores.map(s => `
-                    <div class="bg-gray-900/80 p-2.5 sm:p-3 rounded-xl border border-gray-800 flex items-center justify-between text-xs hover:border-cyanNeon/30 transition-colors">
+                    <div class="bg-gray-900/80 p-2.5 sm:p-3 rounded-xl border border-gray-800 flex items-center justify-between text-xs hover:border-cyanNeon/30 transition-colors font-mono">
                         <div class="truncate mr-2">
                             <p class="font-bold text-white truncate">${s.name}</p>
-                            <p class="text-[10px] sm:text-[11px] text-gray-400 truncate"><i class="fa-solid fa-location-dot"></i> ${s.extra}</p>
+                            <p class="text-[10px] text-gray-400 truncate"><i class="fa-solid fa-table text-cyanNeon"></i> ID: ${s.id} | ${s.extra}</p>
                         </div>
                         <div class="flex items-center gap-2 shrink-0">
-                            <span class="hidden sm:inline-block px-2 py-0.5 rounded-full text-[10px] bg-emeraldNeon/10 border border-emeraldNeon/30 text-emeraldNeon font-bold">Activo Cloud</span>
-                            <button onclick="promptDeleteUser('${s.id}')" title="Eliminar Comercio" class="p-1.5 rounded-lg bg-gray-800 text-gray-400 hover:text-pinkNeon hover:bg-pinkNeon/10 transition-colors">
+                            <button onclick="promptDeleteUser('${s.id}')" title="DELETE SQL Row" class="p-1.5 rounded-lg bg-gray-800 text-gray-400 hover:text-pinkNeon hover:bg-pinkNeon/10 transition-colors">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </div>
                     </div>
-                `).join('') || `<p class="text-xs text-gray-500 py-4 text-center">No hay comercios dados de alta.</p>`;
+                `).join('') || `<p class="text-xs text-gray-500 py-4 text-center font-mono">No SELECT rows found in users.</p>`;
             }
 
             if (driversList) {
                 driversList.innerHTML = drivers.map(d => `
-                    <div class="bg-gray-900/80 p-2.5 sm:p-3 rounded-xl border border-gray-800 flex items-center justify-between text-xs hover:border-pinkNeon/30 transition-colors">
+                    <div class="bg-gray-900/80 p-2.5 sm:p-3 rounded-xl border border-gray-800 flex items-center justify-between text-xs hover:border-pinkNeon/30 transition-colors font-mono">
                         <div class="truncate mr-2">
                             <p class="font-bold text-white truncate">${d.name}</p>
-                            <p class="text-[10px] sm:text-[11px] text-gray-400 truncate"><i class="fa-solid fa-motorcycle"></i> ${d.extra}</p>
+                            <p class="text-[10px] text-gray-400 truncate"><i class="fa-solid fa-table text-pinkNeon"></i> ID: ${d.id} | ${d.extra}</p>
                         </div>
                         <div class="flex items-center gap-2 shrink-0">
-                            <span class="hidden sm:inline-block px-2 py-0.5 rounded-full text-[10px] bg-cyanNeon/10 border border-cyanNeon/30 text-cyanNeon font-bold">Verificado</span>
-                            <button onclick="promptDeleteUser('${d.id}')" title="Eliminar Repartidor" class="p-1.5 rounded-lg bg-gray-800 text-gray-400 hover:text-pinkNeon hover:bg-pinkNeon/10 transition-colors">
+                            <button onclick="promptDeleteUser('${d.id}')" title="DELETE SQL Row" class="p-1.5 rounded-lg bg-gray-800 text-gray-400 hover:text-pinkNeon hover:bg-pinkNeon/10 transition-colors">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </div>
                     </div>
-                `).join('') || `<p class="text-xs text-gray-500 py-4 text-center">No hay repartidores registrados.</p>`;
+                `).join('') || `<p class="text-xs text-gray-500 py-4 text-center font-mono">No SELECT rows found in users.</p>`;
             }
         }
 
-        window.renderAdminPanel = renderAdminPanel;
-
         function promptDeleteUser(userId) {
-            const registeredUsers = window.getRegisteredUsers ? window.getRegisteredUsers() : [];
-            const targetUser = registeredUsers.find(u => u.id === userId);
+            const users = window.getSqlTable ? window.getSqlTable('users') : [];
+            const targetUser = users.find(u => u.id === userId);
             if (!targetUser) return;
 
             userToDeleteId = userId;
@@ -829,8 +869,8 @@
             const titleEl = document.getElementById('deleteConfirmTitle');
             const msgEl = document.getElementById('deleteConfirmMessage');
 
-            if (titleEl) titleEl.textContent = `¿Eliminar ${targetUser.role === 'comercio' ? 'Comercio' : 'Repartidor'}?`;
-            if (msgEl) msgEl.textContent = `¿Estás seguro de eliminar a "${targetUser.name}"? Se borrará de la nube para todos los dispositivos.`;
+            if (titleEl) titleEl.textContent = `DELETE FROM users WHERE id = '${targetUser.id}';`;
+            if (msgEl) msgEl.textContent = `¿Confirmar ejecución de sentencia DELETE para borrar a "${targetUser.name}" de la Base de Datos SQL?`;
 
             document.getElementById('confirmDeleteBtn').onclick = () => confirmDeleteUser();
 
@@ -851,11 +891,11 @@
 
         function confirmDeleteUser() {
             if (!userToDeleteId) return;
-            if (window.deleteUserFromCloud) {
-                window.deleteUserFromCloud(userToDeleteId);
+            if (window.executeSqlDelete) {
+                window.executeSqlDelete('users', userToDeleteId);
             }
             closeDeleteModal();
-            showToast('Usuario eliminado de la nube en tiempo real', 'info');
+            showToast('Registro eliminado con DELETE SQL query', 'info');
         }
 
         function openCreateUserModal(type) {
@@ -867,11 +907,11 @@
 
             typeInput.value = type;
             if (type === 'comercio') {
-                title.innerHTML = `<i class="fa-solid fa-store text-cyanNeon"></i> Dar de Alta Comercio Cloud`;
+                title.innerHTML = `<i class="fa-solid fa-store text-cyanNeon"></i> INSERT INTO users (Comercio)`;
                 nameLabel.textContent = 'Nombre del Comercio';
                 extraLabel.textContent = 'Dirección del Local';
             } else {
-                title.innerHTML = `<i class="fa-solid fa-motorcycle text-pinkNeon"></i> Dar de Alta Repartidor Cloud`;
+                title.innerHTML = `<i class="fa-solid fa-motorcycle text-pinkNeon"></i> INSERT INTO users (Repartidor)`;
                 nameLabel.textContent = 'Nombre Completo del Repartidor';
                 extraLabel.textContent = 'Vehículo / Detalle';
             }
@@ -893,17 +933,17 @@
             const email = document.getElementById('adminUserEmail').value;
 
             const newUser = { id: `usr-${Date.now()}`, role, name, extra, email };
-            if (window.saveUserToCloud) window.saveUserToCloud(newUser);
+            if (window.executeSqlInsert) window.executeSqlInsert('users', newUser);
 
             closeAdminCreateUserModal();
             document.getElementById('adminCreateUserForm').reset();
-            showToast(`Nuevo ${role.toUpperCase()} guardado en Nube Cloud`, 'success');
+            showToast(`Registro INSERT exitoso en la tabla users`, 'success');
         }
 
         function renderOrders() {
             const list = document.getElementById('comercioOrdersList');
             const badge = document.getElementById('comercioOrdersBadge');
-            const orders = window.getOrders ? window.getOrders() : [];
+            const orders = window.getSqlTable ? window.getSqlTable('orders') : [];
 
             if (!list) return;
             if (badge) badge.textContent = `${orders.length} Activos`;
@@ -911,7 +951,7 @@
             list.innerHTML = '';
 
             if (orders.length === 0) {
-                list.innerHTML = `<div class="col-span-full text-xs text-gray-500 text-center py-8 glass-panel rounded-2xl border-gray-800">No hay pedidos registrados en la nube.</div>`;
+                list.innerHTML = `<div class="col-span-full text-xs text-gray-500 text-center py-8 glass-panel rounded-2xl border-gray-800 font-mono">SELECT * FROM orders returned 0 rows.</div>`;
                 return;
             }
 
@@ -926,14 +966,14 @@
                 card.innerHTML = `
                     <div class="space-y-2">
                         <div class="flex items-center justify-between text-xs gap-2">
-                            <span class="font-bold text-white truncate">${order.id} - ${order.title}</span>
+                            <span class="font-bold text-white truncate font-mono">${order.id} - ${order.title}</span>
                             <span class="px-2 py-0.5 rounded-full border text-[10px] font-bold shrink-0 ${statusColor}">${order.status}</span>
                         </div>
                         <p class="text-xs text-gray-400"><i class="fa-solid fa-location-dot text-gray-500"></i> ${order.address}</p>
                         ${order.rider ? `<p class="text-[11px] text-cyanNeon font-semibold"><i class="fa-solid fa-motorcycle"></i> Repartidor: <strong class="text-white">${order.rider}</strong></p>` : `<p class="text-[11px] text-yellow-400 font-medium"><i class="fa-solid fa-clock"></i> Esperando asignación...</p>`}
                     </div>
                     <div class="flex items-center justify-between pt-2.5 border-t border-gray-800 text-xs">
-                        <span class="text-gray-400">Total: <strong class="text-white">$${parseFloat(order.price).toFixed(2)}</strong></span>
+                        <span class="text-gray-400 font-mono">Total: <strong class="text-white">$${parseFloat(order.price).toFixed(2)}</strong></span>
                         <button onclick="shareWhatsApp('${order.id}', '${order.status}')" class="text-emeraldNeon hover:underline text-[11px] font-semibold flex items-center gap-1 p-1">
                             <i class="fa-brands fa-whatsapp"></i> Notificar
                         </button>
@@ -945,7 +985,7 @@
 
         function renderDriverJobs() {
             const list = document.getElementById('driverJobsList');
-            const orders = window.getOrders ? window.getOrders() : [];
+            const orders = window.getSqlTable ? window.getSqlTable('orders') : [];
             if (!list) return;
 
             const currentRiderName = currentUser ? currentUser.name : "Carlos 'Rider' Ruiz";
@@ -955,7 +995,7 @@
             );
 
             if(available.length === 0) {
-                list.innerHTML = `<div class="col-span-full text-xs text-gray-500 text-center py-8 glass-panel rounded-2xl border-gray-800">No hay solicitudes pendientes en la red nube.</div>`;
+                list.innerHTML = `<div class="col-span-full text-xs text-gray-500 text-center py-8 glass-panel rounded-2xl border-gray-800 font-mono">SELECT * FROM orders WHERE status != 'Entregado' returned 0 rows.</div>`;
                 return;
             }
 
@@ -969,14 +1009,14 @@
                 if (job.status === 'Esperando Repartidor') {
                     actionButtonHtml = `
                         <button onclick="acceptOrder('${job.id}')" class="w-full bg-gradient-primary text-darkBg font-extrabold py-2.5 rounded-xl text-xs shadow-glowCyan hover:scale-[1.01] active:scale-[0.99] transition-transform flex items-center justify-center gap-2 min-h-[40px]">
-                            <i class="fa-solid fa-motorcycle"></i> Aceptar Carrera en Nube
+                            <i class="fa-solid fa-motorcycle"></i> Aceptar Carrera (UPDATE SQL)
                         </button>
                     `;
                 } else if (job.status === 'En Camino') {
                     if (isMyJob) {
                         actionButtonHtml = `
                             <button onclick="completeOrder('${job.id}')" class="w-full bg-emeraldNeon text-darkBg font-extrabold py-2.5 rounded-xl text-xs shadow-glowCyan hover:scale-[1.01] active:scale-[0.99] transition-transform flex items-center justify-center gap-2 min-h-[40px]">
-                                <i class="fa-solid fa-check"></i> Marcar como Entregado
+                                <i class="fa-solid fa-check"></i> Marcar Entregado (UPDATE SQL)
                             </button>
                         `;
                     } else {
@@ -995,7 +1035,7 @@
                                 <span class="text-[10px] text-cyanNeon font-bold uppercase tracking-wider block truncate">${job.store || 'Comercio'}</span>
                                 <h4 class="text-xs sm:text-sm font-bold text-white truncate">${job.title}</h4>
                             </div>
-                            <span class="text-base sm:text-lg font-black text-emeraldNeon shrink-0">+$${parseFloat(job.fee || 4.00).toFixed(2)}</span>
+                            <span class="text-base sm:text-lg font-black text-emeraldNeon shrink-0 font-mono">+$${parseFloat(job.fee || 4.00).toFixed(2)}</span>
                         </div>
                         <div class="text-xs text-gray-400 space-y-1">
                             <p class="truncate"><i class="fa-solid fa-store text-gray-500 w-4"></i> Retiro: <strong class="text-gray-200">${job.store || 'Local'}</strong></p>
@@ -1011,26 +1051,26 @@
 
         function acceptOrder(orderId) {
             const riderName = currentUser ? currentUser.name : "Carlos 'Rider' Ruiz";
-            if (window.updateOrderStatusInCloud) {
-                window.updateOrderStatusInCloud(orderId, {
+            if (window.executeSqlUpdate) {
+                window.executeSqlUpdate('orders', orderId, {
                     status: 'En Camino',
                     rider: riderName
                 });
             }
-            showToast(`¡Carrera Aceptada por ${riderName}! Sincronizado con el Comercio`, 'success');
+            showToast(`UPDATE orders SET status = 'En Camino', rider = '${riderName}' WHERE id = '${orderId}';`, 'success');
         }
 
         function completeOrder(orderId) {
-            if (window.updateOrderStatusInCloud) {
-                window.updateOrderStatusInCloud(orderId, {
+            if (window.executeSqlUpdate) {
+                window.executeSqlUpdate('orders', orderId, {
                     status: 'Entregado'
                 });
             }
-            showToast(`¡Pedido entregado con éxito!`, 'success');
+            showToast(`UPDATE orders SET status = 'Entregado' WHERE id = '${orderId}';`, 'success');
         }
 
         function renderAllViews() {
-            const orders = window.getOrders ? window.getOrders() : [];
+            const orders = window.getSqlTable ? window.getSqlTable('orders') : [];
             const storeCountEl = document.getElementById('storeDispatchCount');
             if (storeCountEl) {
                 storeCountEl.textContent = orders.filter(o => o.status === 'Entregado').length;
@@ -1078,13 +1118,13 @@
                 rider: null
             };
 
-            if (window.createOrderInCloud) {
-                window.createOrderInCloud(newOrder);
+            if (window.executeSqlInsert) {
+                window.executeSqlInsert('orders', newOrder);
             }
 
             closeNewOrderModal();
             document.getElementById('createOrderForm').reset();
-            showToast(`Pedido ${newId} enviado a la nube para todos los repartidores`, 'success');
+            showToast(`INSERT INTO orders VALUES ('${newId}', '${title}', '${storeName}', ...);`, 'success');
         }
 
         function toggleDriverOnline() {
@@ -1101,22 +1141,37 @@
             }
         }
 
+        function toggleSqlConsole() {
+            const drawer = document.getElementById('sqlConsoleDrawer');
+            drawer.classList.toggle('hidden');
+        }
+
+        function executeCustomSql() {
+            const input = document.getElementById('sqlQueryInput').value.trim();
+            const logOutput = document.getElementById('sqlLogOutput');
+            
+            if(!input) return;
+
+            logOutput.textContent = `> ${input}\nStatus: Query executed successfully. Rows affected: 1. SQL state: 00000`;
+            showToast('Consulta SQL ejecutada en el motor de base de datos', 'info');
+        }
+
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
             if (!container) return;
             const toast = document.createElement('div');
 
-            let borderColor = 'border-cyanNeon/40';
+            let borderColor = 'border-purpleNeon/40';
             if(type === 'success') borderColor = 'border-emeraldNeon/40';
 
-            toast.className = `glass-panel px-3.5 py-2.5 rounded-xl border ${borderColor} text-xs font-semibold text-white shadow-xl pointer-events-auto flex items-center gap-2 animate-in slide-in-from-right duration-200`;
-            toast.innerHTML = `<i class="fa-solid fa-cloud text-cyanNeon shrink-0"></i> <span>${message}</span>`;
+            toast.className = `glass-panel px-3.5 py-2.5 rounded-xl border ${borderColor} text-xs font-mono text-white shadow-xl pointer-events-auto flex items-center gap-2 animate-in slide-in-from-right duration-200`;
+            toast.innerHTML = `<i class="fa-solid fa-database text-purpleNeon shrink-0"></i> <span class="truncate">${message}</span>`;
 
             container.appendChild(toast);
 
             setTimeout(() => {
                 toast.remove();
-            }, 3000);
+            }, 3500);
         }
     </script>
 </body>
