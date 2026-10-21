@@ -83,7 +83,6 @@
     <!-- Toast Notifications Container -->
     <div id="toastContainer" class="fixed top-4 sm:top-20 right-3 sm:right-4 left-3 sm:left-auto z-[9999] flex flex-col gap-2 pointer-events-none max-w-sm ml-auto"></div>
 
-    <!-- AUTH SCREEN MODAL -->
     <div id="authScreen" class="fixed inset-0 z-[10000] bg-darkBg/95 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
         <div class="glass-panel w-full max-w-md rounded-2xl sm:rounded-3xl border border-cyanNeon/30 p-5 sm:p-8 space-y-5 sm:space-y-6 shadow-glowCyan relative animate-in fade-in zoom-in duration-300 my-auto">
             <div class="text-center space-y-1.5 sm:space-y-2">
@@ -137,7 +136,6 @@
         </div>
     </div>
 
-    <!-- MAIN HEADER -->
     <header class="glass-panel border-b border-gray-800 px-3 sm:px-6 py-2.5 sm:py-3 z-40 shrink-0 flex items-center justify-between gap-2 sm:gap-4">
         <div class="flex items-center gap-2 sm:gap-3 shrink-0">
             <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-primary flex items-center justify-center text-darkBg text-lg sm:text-xl font-black shadow-glowCyan">
@@ -179,7 +177,6 @@
         </div>
     </header>
 
-    <!-- MAIN VIEWS WRAPPER -->
     <div class="flex-1 flex flex-col overflow-hidden relative max-w-7xl mx-auto w-full p-2.5 sm:p-4 md:p-6">
         <div class="flex-1 bg-darkBg flex flex-col overflow-hidden rounded-2xl border border-gray-800">
             
@@ -535,7 +532,6 @@ CREATE TABLE orders (
                     networkUsers.push({ id: docSnap.id, ...docSnap.data() });
                 });
                 
-                // Set memory state directly from Cloud network data
                 sqlDatabase.users = networkUsers;
                 if (typeof window.renderAllViews === 'function') window.renderAllViews();
             }, (error) => console.error("Error reading Users from Cloud Network:", error));
@@ -544,10 +540,10 @@ CREATE TABLE orders (
             onSnapshot(ORDERS_COLLECTION, (snapshot) => {
                 const networkOrders = [];
                 snapshot.forEach(docSnap => {
-                    networkOrders.push({ id: docSnap.id, ...docSnap.data() });
+                    const data = docSnap.data();
+                    networkOrders.push({ id: docSnap.id, ...data });
                 });
                 
-                // Set memory state directly from Cloud network data
                 sqlDatabase.orders = networkOrders;
                 if (typeof window.renderAllViews === 'function') window.renderAllViews();
             }, (error) => console.error("Error reading Orders from Cloud Network:", error));
@@ -559,6 +555,17 @@ CREATE TABLE orders (
         };
 
         window.executeSqlInsert = async function(tableName, data) {
+            // Optimistically add to local array for instant multi-tab UI response
+            if (sqlDatabase[tableName]) {
+                const existingIdx = sqlDatabase[tableName].findIndex(item => item.id === data.id);
+                if (existingIdx >= 0) {
+                    sqlDatabase[tableName][existingIdx] = data;
+                } else {
+                    sqlDatabase[tableName].push(data);
+                }
+                if (typeof window.renderAllViews === 'function') window.renderAllViews();
+            }
+
             if (!isAuthReady) return;
             try {
                 const targetDoc = doc(db, 'artifacts', appId, 'public', 'data', tableName, data.id);
@@ -569,6 +576,15 @@ CREATE TABLE orders (
         };
 
         window.executeSqlUpdate = async function(tableName, id, updateData) {
+            // Optimistically update memory state
+            if (sqlDatabase[tableName]) {
+                const item = sqlDatabase[tableName].find(i => i.id === id);
+                if (item) {
+                    Object.assign(item, updateData);
+                    if (typeof window.renderAllViews === 'function') window.renderAllViews();
+                }
+            }
+
             if (!isAuthReady) return;
             try {
                 const targetDoc = doc(db, 'artifacts', appId, 'public', 'data', tableName, id);
@@ -579,6 +595,11 @@ CREATE TABLE orders (
         };
 
         window.executeSqlDelete = async function(tableName, id) {
+            if (sqlDatabase[tableName]) {
+                sqlDatabase[tableName] = sqlDatabase[tableName].filter(i => i.id !== id);
+                if (typeof window.renderAllViews === 'function') window.renderAllViews();
+            }
+
             if (!isAuthReady) return;
             try {
                 const targetDoc = doc(db, 'artifacts', appId, 'public', 'data', tableName, id);
@@ -877,7 +898,7 @@ CREATE TABLE orders (
                         ${order.rider ? `<p class="text-[11px] text-cyanNeon font-semibold"><i class="fa-solid fa-motorcycle"></i> Repartidor: <strong class="text-white">${order.rider}</strong></p>` : `<p class="text-[11px] text-yellow-400 font-medium"><i class="fa-solid fa-clock"></i> Esperando asignación...</p>`}
                     </div>
                     <div class="flex items-center justify-between pt-2.5 border-t border-gray-800 text-xs">
-                        <span class="text-gray-400 font-mono">Total: <strong class="text-white">$${parseFloat(order.price).toFixed(2)}</strong></span>
+                        <span class="text-gray-400 font-mono">Total: <strong class="text-white">$${parseFloat(order.price || 0).toFixed(2)}</strong></span>
                         <button onclick="shareWhatsApp('${order.id}', '${order.status}')" class="text-emeraldNeon hover:underline text-[11px] font-semibold flex items-center gap-1 p-1">
                             <i class="fa-brands fa-whatsapp"></i> Notificar
                         </button>
@@ -893,10 +914,13 @@ CREATE TABLE orders (
             if (!list) return;
 
             const currentRiderName = currentUser ? currentUser.name : "Carlos 'Rider' Ruiz";
-            const available = orders.filter(o => 
-                o.status === 'Esperando Repartidor' || 
-                o.status === 'En Camino'
-            );
+            
+            // Allow matching "Esperando Repartidor" or "En Camino"
+            const available = orders.filter(o => {
+                if (!o.status) return false;
+                const statusLower = o.status.trim().toLowerCase();
+                return statusLower === 'esperando repartidor' || statusLower === 'en camino';
+            });
 
             if(available.length === 0) {
                 list.innerHTML = `<div class="col-span-full text-xs text-gray-500 text-center py-8 glass-panel rounded-2xl border-gray-800 font-mono">No hay solicitudes disponibles en la red.</div>`;
@@ -910,13 +934,15 @@ CREATE TABLE orders (
                 card.className = `glass-panel p-3.5 sm:p-4 rounded-2xl ${isMyJob ? 'border-emeraldNeon/40 bg-emeraldNeon/5' : 'border-cyanNeon/30'} flex flex-col justify-between space-y-3 sm:space-y-4`;
                 
                 let actionButtonHtml = '';
-                if (job.status === 'Esperando Repartidor') {
+                const jobStatusLower = job.status.trim().toLowerCase();
+                
+                if (jobStatusLower === 'esperando repartidor') {
                     actionButtonHtml = `
                         <button onclick="acceptOrder('${job.id}')" class="w-full bg-gradient-primary text-darkBg font-extrabold py-2.5 rounded-xl text-xs shadow-glowCyan hover:scale-[1.01] active:scale-[0.99] transition-transform flex items-center justify-center gap-2 min-h-[40px]">
                             <i class="fa-solid fa-motorcycle"></i> Tomar Pedido en la Nube
                         </button>
                     `;
-                } else if (job.status === 'En Camino') {
+                } else if (jobStatusLower === 'en camino') {
                     if (isMyJob) {
                         actionButtonHtml = `
                             <button onclick="completeOrder('${job.id}')" class="w-full bg-emeraldNeon text-darkBg font-extrabold py-2.5 rounded-xl text-xs shadow-glowCyan hover:scale-[1.01] active:scale-[0.99] transition-transform flex items-center justify-center gap-2 min-h-[40px]">
@@ -926,7 +952,7 @@ CREATE TABLE orders (
                     } else {
                         actionButtonHtml = `
                             <div class="w-full text-center py-2 bg-gray-800/80 border border-gray-700 text-gray-400 rounded-xl text-xs font-semibold">
-                                Tomado por: ${job.rider}
+                                Tomado por: ${job.rider || 'Otro Repartidor'}
                             </div>
                         `;
                     }
